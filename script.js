@@ -54,50 +54,53 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =============================
-  // Timeline animation au scroll
-  // =============================
-  const timelineItems = document.querySelectorAll('.timeline-item');
-  const timelineLine = document.querySelector('.timeline-line');
-  const timelineWrapper = document.querySelector('.timeline-wrapper');
+// Timeline animation au scroll
+// =============================
+const timelineLine = document.querySelector('.timeline-line');
+const timelineWrapper = document.querySelector('.timeline-wrapper');
 
-  const revealTimelineItems = () => {
-    const triggerBottom = window.innerHeight * 0.85;
-    timelineItems.forEach(item => {
-      const top = item.getBoundingClientRect().top;
-      if (top < triggerBottom) {
-        item.style.opacity = '1';
-        item.style.transform = 'translateY(0)';
-      }
-    });
-  };
+const timelineItems = document.querySelectorAll('.timeline-item');
 
-  const animateTimelineLine = () => {
-    if (!timelineWrapper || !timelineLine || timelineItems.length === 0) return;
-
-    let lastVisible = null;
-    timelineItems.forEach(item => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.8) lastVisible = item;
-    });
-
-    if (lastVisible) {
-      const first = timelineItems[0];
-      const firstCenter = first.offsetTop + first.offsetHeight / 2;
-      const lastCenter = lastVisible.offsetTop + lastVisible.offsetHeight / 2;
-      timelineLine.style.top = firstCenter + 'px';
-      timelineLine.style.height = (lastCenter - firstCenter) + 'px';
+const revealTimelineItems = () => {
+  const triggerBottom = window.innerHeight * 0.85;
+  timelineItems.forEach(item => {
+    const top = item.getBoundingClientRect().top;
+    if (top < triggerBottom) {
+      item.style.opacity = '1';
+      item.style.transform = 'translateY(0)';
     }
-  };
-
-  window.addEventListener('scroll', () => {
-    revealTimelineItems();
-    animateTimelineLine();
   });
-  window.addEventListener('resize', animateTimelineLine);
+};
 
-  // init
+const animateTimelineLine = () => {
+  if (!timelineWrapper || !timelineLine) return;
+
+  const wrapperTop = timelineWrapper.offsetTop;
+  const wrapperHeight = timelineWrapper.offsetHeight;
+  const firstItem = timelineItems[0];
+  const lastItem = timelineItems[timelineItems.length - 1];
+  
+  const firstCenter = firstItem.offsetTop + firstItem.offsetHeight / 2;
+  const lastCenter = lastItem.offsetTop + lastItem.offsetHeight / 2;
+  const totalLineHeight = lastCenter - firstCenter;
+
+  const scrollY = window.scrollY + window.innerHeight / 2; // milieu écran
+  let progress = (scrollY - (wrapperTop + firstCenter)) / totalLineHeight;
+
+  progress = Math.max(0, Math.min(1, progress));
+
+  timelineLine.style.top = firstCenter + 'px';
+  timelineLine.style.height = (totalLineHeight * progress) + 'px';
+};
+
+window.addEventListener('scroll', () => {
   revealTimelineItems();
   animateTimelineLine();
+});
+window.addEventListener('resize', animateTimelineLine);
+
+revealTimelineItems();
+animateTimelineLine();
 
   // =============================
   // Fallback image profil

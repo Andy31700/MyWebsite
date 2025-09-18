@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Andy Dourel</title>
+    <style>
+      /* ---- Base & Reset ---- */
+      :root{--bg:#fefdf0; --panel:#fefdf0; --accent:#000000; --card-border:rgba(255,255,255,0.03); --muted:#555; --third:#1e6f9f;--glass: linear-gradient(180deg, var(--card-border), rgba(0,0,0,0.02));--radius:12px; --max-width:100rem}
+      *{box-sizing:border-box;margin:0;padding:1.5px}
+      html,body{height:100%}
+      body{font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45}
+      body.dark {--bg:#0e1117;--accent:#fefdf0;--muted:#aaa;--third:#ff8a73;--card-border:#fefdf0}
+
+      /* ==== Theme Toggle ==== */
+      .theme-toggle {margin-left: auto;display: flex;align-items: center}
+      .theme-toggle input {display: none}
+      .theme-toggle .slider {cursor: pointer;width: 50px;height: 29px;background: var(--bg);border-radius: 25px;border: 2px solid;position: relative;transition: background 0.3s;}
+      .theme-toggle .slider:after {content: '';position: absolute;left: 3px;top: 3px;width: 19px;height: 19px;background: var(--accent);border-radius: 50%;transition: 0.3s}
+      .theme-toggle input:checked + .slider {background: #000}
+      .theme-toggle input:checked + .slider:after {left: calc(100% - 22px)}
+
+
+      /* ---- Header ---- */
+      .header{background:var(--bg)}
+      .header-inner{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;padding:18px; border-bottom:2px solid var(--accent)}
+      .brand{display:flex;align-items:center;gap:12px}
+      .logo-circle{width:34px;height:34px;border: 2px solid var(--accent);border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700}
+      .nav{margin-left:18px;}
+      .nav a{color:var(--accent);margin-right:18px;font-weight:600;text-decoration: none;}
+      .nav a.active{color:var(--accent)}
+
+      /* ---- CV ---- */
+      .cv-button {padding: 8px 16px;background-color: var(--accent);color: var(--bg);border: none;border-radius: 4px;cursor: pointer;font-weight: 600}
+      .modal {position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.9);display: flex;justify-content: center;align-items: center;display: none}
+      .modal-content {position: relative;width: auto;height: auto;max-width: auto;max-height: auto;overflow: hidden;background: transparent;display: flex;justify-content: center;align-items: center;border-radius: 8px}
+      .cv-image {max-width: 100%;max-height: 100%;object-fit: contain;border-radius: 0px;}
+      .close-btn {position: absolute;top: 10px;right: 10px;font-size: 28px;font-weight: bold;background: none;border: none;cursor: pointer;color: #333;z-index: 10;transition: color 0.2s}
+      .close-btn:hover {color: red}
+
+
+      /* ---- Layout ---- */
+      .container{max-width:var(--max-width);margin:28px auto;display:grid;grid-template-columns:350px 1fr;gap:40px;padding:0 16px}
+
+      /* ---- Sidebar profile ---- */
+      .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:2px solid var(--accent);padding:26px;border-radius:var(--radius)}
+      .profile-pic{width:220px;height:220px;margin:0 auto;border-radius:50%;background:var(--bg);display:block;overflow:hidden;border:5px solid var(--accent)}
+      .profile-pic img{width:100%;height:100%;object-fit:cover;display:block}
+      .name{text-align:center;margin-top:18px;font-size:24px;font-weight:600}
+      .role{text-align:center;color:var(--third);margin-top:6px;font-size: 20px;font-weight: 400;}
+      .contact{display:block;margin:18px auto 8px auto;padding:10px 14px;border-radius:8px;background:var(--accent);color:var(--bg);font-weight:700;width:85%;text-align:center;text-decoration: none;}
+      .meta{margin-top:12px;color:var(--accent);font-size:15px;text-align:center}
+      .list{margin-top:18px;border-top:2px solid rgba(43,51,63,1);padding-top:14px;text-align: center;}
+      .list h4{color:var(--accent);margin-bottom:8px;font-size: 18px;}
+      .lang{color:var(--accent);font-size:15px}
+
+      /* ---- Main presentation ---- */
+      .panel{background:var(--bg);padding:22px;border-radius:var(--radius);border:2px solid var(--accent); border-radius: 3.375rem;}
+      .hero h1{font-size:36px;margin-bottom:8px; font-weight: 600;border-bottom:2px solid var(--accent)}
+      .hero p{color:var(--accent);font-size:16px}
+
+      .stack{margin-top:60px; margin-bottom: 15px}
+      .stack .title{font-weight:600;font-size:2rem ;margin-bottom:12px;border-bottom:2px solid var(--accent)}
+      .badges{display:flex;flex-wrap:wrap;gap:12px}
+      .badge{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#161b22;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-weight:450; font-size: 1.1rem;}
+
+      /* ---- Competences / Experiences / Projects ---- */
+      .section{margin-top:80px;}
+      .section h3{font-size:2rem;margin-bottom:50px;font-weight: 600;justify-content: center; display: grid;}
+      .exp{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.02)}
+      .exp .dot{width:46px;height:46px;border-radius:10px;background:#0a0d0f;display:flex;align-items:center;justify-content:center}
+      .exp .body{flex:1}
+      .exp .body h4{font-size:15px}
+      .exp .body p{color:var(--muted);font-size:14px;margin-top:6px}
+      
+      /* ==== SECTION BULLES ==== */
+      .bubbles-section {text-align: center;}
+      .bubbles-grid {display: flex;justify-content: center;gap: 200px;flex-wrap: wrap;}
+      .bubbles-column {display: grid;grid-template-columns: repeat(2, 1fr);gap: 40px;justify-items: center;}
+      .bubbles-column h3 {grid-column: span 2;font-size: 20px;margin-bottom: 20px;color: var(--accent);margin-bottom: -20px;}
+      .bubble {position: relative;width: 80px;height: 80px;border-radius: 50%;display: flex;justify-content: center;align-items: center;cursor: pointer;transition: transform 0.3s ease;}
+      .bubble::before {content: "";position: absolute;inset: 0;border-radius: 50%;filter: blur(25px);z-index: -1;}
+      .bubble .inner {width: 60%;height: 60%;border-radius: 20%;background: inherit;background-blend-mode: multiply;background-color: rgba(0,0,0,0.3);display: flex;justify-content: center;align-items: center;font-size: 1.8rem;color: white;}
+      .bubble p {position: absolute;bottom: -30px;opacity: 0;transform: translateY(0);transition: opacity 0.3s ease, transform 0.3s ease;color: var(--bg)}
+      .bubble.long-text p {bottom: -30px}
+      .bubble:hover {transform: scale(0.9);}
+      .bubble:hover p {opacity: 1;transform: translateY(10px)}
+      .yellow {background: radial-gradient(circle at 30% 30%, #fcd7a8, #fef091);}
+      .blue {background: radial-gradient(circle at 30% 30%, #6fbdff, #85edff);}
+      .pink {background: radial-gradient(circle at 30% 30%, #e250e3, #fc8ec2);}
+      .green {background: radial-gradient(circle at 30% 30%, #6eecd0, #9fe4f4);}
+      .orange {background: radial-gradient(circle at 30% 30%, #ffc7a1, #ff7849);}
+
+      /* ==== SECTION CARTES ==== */
+      .projects {display: grid;grid-template-columns: repeat(3, 1fr);gap: 40px;width: 99%;max-width: 1000rem;}
+      .projects .card {position: relative;overflow: hidden;border-radius: 16px;box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);cursor: pointer;background: var(--bg);height: 12rem;width: 20rem;  display: flex; justify-content: center;align-items: center; }
+      .projects .card img {width: 121%;height: 191px;object-fit: cover;display: block;}
+
+      .projects-header {display: flex;justify-content: center;align-items: center;gap: 1rem;margin-bottom: 2rem;}
+      .arrow-btn {background: var(--accent);border: none;color: var(--bg);font-size: 1.6rem;font-weight: bold;width: 30px;height: 30px;border-radius: 12px;cursor: pointer;transition: transform 0.2s ease, background 0.2s ease;display: flex;justify-content: center;line-height: 1;margin-bottom: 50px}
+      .arrow-btn:hover {transform: scale(1.15);background: color-mix(in srgb, var(--accent) 90%, white 10%)}
+
+
+      /* Overlay au survol */
+      .overlay {position: absolute;inset: 0;background: rgba(0, 0, 0, 0.85);color: white;opacity: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;padding: 20px;text-align: center;transition: opacity 0.3s ease-in-out;}
+      .card:hover .overlay {opacity: 1;}
+      .overlay h3 {font-size: 20px;margin-bottom: 10px;}
+      .overlay p {font-size: 14px;margin-bottom: 10px;}
+      .date {font-size: 12px;color: #bbb;}
+      .tech {display: flex;gap: 8px;margin-top: 10px;flex-wrap: wrap;}
+      .tech span {background: rgba(255, 255, 255, 0.2);padding: 4px 8px;border-radius: 8px;font-size: 12px;}
+
+      /* ==== SECTION EXPERIENCE ==== */
+      .timeline-wrapper {position: relative;width: 99%;max-width: 1000rem;margin: 0 auto;margin-top: 80px;}
+      .timeline-line {position: absolute;left: 50%;width: 5px;background: var(--accent);transform: translateX(-50%);transition: height 0.25s ease, top 0.25s ease;z-index: 0;}
+      .item-header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;}
+      .item-header h4 {font-size: 18px;}
+      .timeline-item {position: relative;width: 45%;padding: 25px 15px;background: var(--bg);border-radius: 15px;box-shadow: 0 0 8px var(--accent);transition: all 0.6s ease-out;margin: 70px 0;z-index: 1;}
+      .date-badge {background: var(--accent);color: var(--bg);padding: 4px 10px;border-radius: 12px;font-size: 0.8rem;font-weight: 600;white-space: nowrap;}
+
+      .timeline-item:nth-child(odd) {left: 0;}
+      .timeline-item:nth-child(even) {left: 55%;}
+
+      /* ==== SECTION CONTACT ==== */
+      .contact-container {display: -webkit-inline-box;gap: 40px;margin-left: 14rem;}
+
+      /* Form */
+      .contact-form {display: grid;width: 100%; /* prends un peu plus d'espace */margin: 0 auto;}
+      .contact-form input, .contact-form textarea { background: transparent;border: 3px solid var(--accent);padding: 10px; margin-bottom: 15px;color: var(--accent);outline: none;border-radius: 10px;}
+      .contact-form textarea {resize: none;height: 120px;}
+      .contact-form button {background: #2c80d3;border: none;color: #fff;padding: 2px; border-radius: 4px; cursor: pointer; transition: background 0.3s; display: flex; justify-content: center; }
+      .contact-form button:hover {background: #1f5f9d;}
+      .contact-form .send-icon {width: 30px; height: 30px;}
+
+      /* Info section */
+      .contact-info {display: flex;flex-direction: column;gap: 20px;justify-content: center;}
+      .row {display: flex;gap: 10px;}
+      .row input {flex: 1;}
+      .info-item {display: flex;align-items: center;gap: 12px;font-size: 15px;color: var(--accent);}
+      .info-item i {font-size: 18px;color: #9ca3af;width: 20px;text-align: center;}
+      .info-item img {width: 30px; height: 30px;object-fit: contain;filter: grayscale(100%);}
+      .info-item span {font-size: 20px; font-weight: 10rem;}
+
+      /* ---- Responsive ---- */
+      @media (max-width: 768px) {.timeline-item {width: 100%;left: 0 !important;margin-left: 0;}.timeline-item::before {left: -100px;}.timeline-line {left: 20px;}}
+      @media (max-width:980px){.container{grid-template-columns:1fr;}}
+
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-inner">
+        <div class="brand">
+          <div class="logo-circle">AD</div>
+          <nav class="nav">
+            <a href="#presentation" class="active">Présentation</a>
+            <a href="#projects">Projets</a>
+            <a href="#experiences">Expériences</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+        <button class="cv-button" id="cvBtn">CV</button>
+        <div class="theme-toggle">
+          <input type="checkbox" id="switch" />
+          <label for="switch" class="slider"></label>
+        </div>
+      </div>
+    </header>
+
+    <!-- Modal -->
+    <div class="modal" id="cvModal">
+      <div class="modal-content">
+        <button class="close-btn" id="closeModal">X</button>
+        <img src="assets/CV.png" alt="CV" class="cv-image">
+      </div>
+    </div>
+
+
+    <main class="container">
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="card">
+          <div class="profile-pic" id="profilePic">
+            <img src="assets/portrait.png" alt="photo">
+          </div>
+          <div class="name">Andy Dourel</div>
+          <div class="role">Ingénieur Cybersécurité</div>
+          <a class="contact" href="mailto:dourel.andy@gmail.com">dourel.andy@gmail.com</a>
+          <div class="meta">24 ans · Blagnac, 31700<br><img src="assets/teleport.gif" alt="gif animé" style="width:20px; vertical-align:middle;"><span style="color:#19c615; font-weight:600;">Recherche d'emploi</span><br>🎓 CESI Labège<br>🚗 Véhiculé</div>
+          <div class="list">
+            <h4>Langues</h4>
+            <div class="lang">🇬🇧 Anglais B2 (TOEIC 860)<br>🇵🇹 Portugais A2</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <section>
+        <div class="panel hero">
+          <small>Dourel Andy / portfolio.md</small>
+          <h1>BIENVENUE SUR <span style="color:var(--third)">MON PORTFOLIO</span></h1>
+          <p>
+            Diplômé de <span style="color:var(--third)">l'école d'ingénieur du CESI</span> en développement d'application, recherchant actuellement un emploi en tant qu'<span style="color:var(--third)">ingénieur cybersécurité</span>.
+            Passionné par la thématique des vulnérabilités depuis mon Projet de Fin d'Etude, j'ai décidé de me spécialiser dans ce domaine. Cela m'a permis
+            de développer mes compétences en <span style="color:var(--third)">gestion des vulnérabilités</span>. Outre la cybersécurité, j'accorde une
+            grande importance au <span style="color:var(--third)">développement</span>, car je crois qu'il est possible de pouvoir appliqué mes connaissances en programmation au domaine de la sécurité informatique.
+          </p>
+          <div class="stack">
+            <div class="title">STACK</div>
+            <section class="bubbles-section">
+              <div class="bubbles-grid">
+                <!-- FRONTEND -->
+                <div class="bubbles-column">
+                  <h3>DÉVELOPPEMENT</h3>
+                  <div class="bubble yellow">
+                    <div class="inner"><img src="assets/python.png" alt="Python" style="width:36px;height:36px"></div>
+                    <p class="date-badge">Python</p>
+                  </div>
+                  <div class="bubble blue">
+                    <div class="inner"><img src="assets/C++.png" alt="C++" style="width:34px;height:37px"></div>
+                    <p class="date-badge">C++</p>
+                  </div>
+                  <div class="bubble green">
+                    <div class="inner"><img src="assets/java.png" alt="Java" style="width:40px;height:40px"></div>
+                    <p class="date-badge">Java</p>
+                  </div>
+                  <div class="bubble pink">
+                    <div class="inner"><img src="assets/js.png" alt="Javascript" style="width:40px;height:40px"></div>
+                    <p class="date-badge">Javascript</p>
+                  </div>
+                </div>
+                <!-- BACKEND & TOOLS -->
+                <div class="bubbles-column">
+                  <h3>CYBERSÉCURITÉ</h3>
+                  <div class="bubble pink long-text">
+                    <div class="inner"><img src="assets/vulnerability-management.png" alt="Gestion des vulnérabilités" style="width:36px;height:36px"></div>
+                    <p class="date-badge">Gestion des vulnérabilités</p>
+                  </div>
+                  <div class="bubble blue long-text">
+                    <div class="inner"><img src="assets/patch_management.png" alt="Patch management" style="width:40px;height:40px"></div>
+                    <p class="date-badge">Patch management</p>
+                  </div>
+                  <div class="bubble green">
+                    <div class="inner"><img src="assets/Anssi.png" alt="ANSSI" style="width:40px;height:40px"></div>
+                    <p class="date-badge">ANSSI</p>
+                  </div>
+                  <div class="bubble orange">
+                    <div class="inner"><img src="assets/ISO27001.png" alt="ISO 27001" style="width:40px;height:40px"></div>
+                    <p class="date-badge">ISO 27001</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- PROJETS -->
+        <div id="projects" class="section">
+          <div class="projects-header">
+            <button class="arrow-btn">‹</button>
+            <h3 id="projects-title">PROJETS SCOLAIRES</h3>
+            <button class="arrow-btn">›</button>
+          </div>
+
+          <!-- Projets scolaires (affichés en premier) -->
+          <div class="projects" id="school-projects">
+            <div class="card">
+              <img src="assets/CesiEAT.PNG" alt="CesiEAT">
+              <div class="overlay">
+                <h3>CesiEAT</h3>
+                <p>Création d'une application similaire à UberEAT®.</p>
+                <p class="date">2023</p>
+                <div class="tech">
+                  <span>Java</span><span>C++</span><span>JS</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <img src="assets/CESIGame.PNG" alt="CESI Game">
+              <div class="overlay">
+                <h3>CESI Game</h3>
+                <p>Jeu de plateforme avec obstacles à plusieurs joueurs.</p>
+                <p class="date">2024</p>
+                <div class="tech">
+                  <span>C++</span><span>Unity</span><span>VR</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <img src="assets/usine30.PNG" alt="Usine 3.0">
+              <div class="overlay">
+                <h3>Usine 3.0</h3>
+                <p>Simulation de gestion de projet pour la mise en oeuvre d'une usine à l'international.</p>
+                <p class="date">2024</p>
+                <div class="tech">
+                  <span>AMDEC</span><span>RACI</span><span>GANTT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projets personnels (masqués au début) -->
+          <div class="projects" id="personal-projects" style="display:none;">
+            <div class="card">
+              <img src="assets/kilometrepro.png" alt="KilometrePro">
+              <div class="overlay">
+                <h3>KilometrePro</h3>
+                <p>Application pour le suivi des frais kilométriques.</p>
+                <p class="date">En cours</p>
+                <div class="tech">
+                  <span>Dart</span><span>Flutter</span><span>GCP</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <img src="assets/1001games.png" alt="1001 Jeux">
+              <div class="overlay">
+                <h3>1001 jeux</h3>
+                <p>Jeu vidéo permettant de jouer à plusieurs mini jeux.</p>
+                <p class="date">En cours</p>
+                <div class="tech">
+                  <span>C++</span><span>Unity</span><span>Blender</span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <img src="assets/VocalEase.png" alt="VocalEase">
+              <div class="overlay">
+                <h3>VocalEase</h3>
+                <p>Utilisation d'un ordinateur par la voix uniquement.</p>
+                <p class="date">Juin 2025</p>
+                <div class="tech">
+                  <span>Python</span><span>VOSK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPERIENCES -->
+        <div id="experiences" class="section timeline-wrapper">
+          <h3 class="section-title">EXPÉRIENCES</h3>
+          <div class="timeline-line"></div>
+          <div class="timeline-item"> 
+            <div class="content">
+              <div class="item-header">
+                <h4>Stage de 2ᵉᵐᵉ année : CESI</h4>
+                <span class="date-badge">3 mois</span>
+              </div>
+              <p>Fabrication d'une mini imprimante permettant d'écrire un message depuis un fichier.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="content">
+              <div class="item-header">
+                <h4>Stage de 3ᵉᵐᵉ année : Capgemini</h4>
+                <span class="date-badge">5 mois</span>
+              </div>
+              <p>Réalisation d'un programme de détection de forme "clé" permettant la superposition de modèle 3d à l'aide de la réalité augmentée.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="content">
+              <div class="item-header">
+                <h4>Stage de 4ᵉᵐᵉ année : Université d'Aalborg (Danemark)</h4>
+                <span class="date-badge">6 mois</span>
+              </div>
+              <p>Création d'un agent conversationnel capable de lire et mener une réflexion sur les données présentes au sein d'une dashboard connectée.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="content">
+              <div class="item-header">
+                <h4>Stage de 5ᵉᵐᵉ année : Collecte Localisation Satellite (CLS)</h4>
+                <span class="date-badge">6 mois</span>
+              </div>
+              <p>- Amélioration du cadre de gestion des vulnérabilités existant.</p>
+              <p>- Test et intégration d'outil de cybersécurité.</p> 
+              <p>- Participation à la résolution des tickets</p>
+              <p>- Prise en compte de la gestion de projet.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACT -->
+        <div id="contact" class="section">
+          <h3>CONTACT</h3>
+          <div class="contact-container">
+
+            <!-- Form -->
+            <form id="contact-form" action="https://formspree.io/f/xxxxx" method="POST" class="contact-form">
+              <div class="row">
+                <input type="text" name="nom" placeholder="Nom" required>
+                <input type="text" name="prenom" placeholder="Prénom" required>
+              </div>
+              <input type="email" name="email" placeholder="Adresse mail" required>
+              <textarea name="message" placeholder="Message" required></textarea>
+              <button type="submit"><img src="assets/send.png" alt="Envoyer" class="send-icon"></button>
+            </form>
+
+            <!-- Info -->
+            <div class="contact-info">
+              <div class="info-item">
+                <img src="assets/localisation.png" alt="location icon">
+                <span>Blagnac, Occitanie</span>
+              </div>
+              <div class="info-item">
+                <img src="assets/phone.png" alt="phone icon">
+                <span>(+33) 6 51 83 12 79</span>
+              </div>
+              <div class="info-item">
+                <img src="assets/mail.png" alt="mail icon">
+                <span>dourelandy@gmail.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script src="script.js"></script>
+      </section>
+    </main>
+  </body>
+</html>

@@ -2,36 +2,59 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andy Dourel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <style>
       /* ---- Base & Reset ---- */
-      :root{--bg:#fefdf0; --panel:#fefdf0; --accent:#000000; --card-border:rgba(255,255,255,0.03); --muted:#555; --third:#1e6f9f;--glass: linear-gradient(180deg, var(--card-border), rgba(0,0,0,0.02));--radius:12px; --max-width:100rem}
+      :root{--bg:#fefdf0; --panel:#fefdf0; --accent:#000000; --card-border:rgba(255,255,255,0.03); --muted:#555; --third:#1e6f9f;--glass: linear-gradient(180deg, var(--card-border), rgba(0,0,0,0.02));--radius:12px; --max-width:100rem; font-family: "Manrope.ttf";}
       *{box-sizing:border-box;margin:0;padding:1.5px}
       html,body{height:100%}
-      body{font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45}
+      body{font-family: 'Manrope', sans-serif;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45; overflow-x: hidden}
       body.dark {--bg:#0e1117;--accent:#fefdf0;--muted:#aaa;--third:#ff8a73;--card-border:#fefdf0}
+      body.dark .info-item img {filter: brightness(0) invert(1);}
+      body, .card, .panel, .projects .card, .timeline-item {transition: background-color 0.9s ease, color 0.9s ease, border-color 0.9s ease}
+      .fade-in-up {opacity: 0;transform: translateY(40px);transition: opacity 0.8s ease, transform 0.8s ease}
+      .fade-in-up.show {opacity: 1;transform: translateY(0)}
+      .fade-in-left {opacity: 0;transform: translateX(40px);transition: opacity 0.8s ease, transform 0.8s ease}
+      .fade-in-up.show {opacity: 1;transform: translateX(0)}
+      .fade-in-right {opacity: 0;transform: translateX(-40px);transition: opacity 0.8s ease, transform 0.8s ease}
+      .fade-in-right.show {opacity: 1;transform: translateX(0)}
 
-      /* ==== Theme Toggle ==== */
+      /* ---- Loader ---- */
+      #loader {position: fixed;inset: 0;background: #000;display: flex;justify-content: center;align-items: center;z-index: 9999;overflow: hidden}
+      #loader span {font-size: 3rem;font-weight: 700;color: #fff;position: relative}
+      #loader span::after {content: "";position: absolute;inset: 0;background: #000;animation: wipeUp 1s ease forwards;animation-delay: 0.4s}
+      @keyframes wipeUp {from { transform: translateY(0%); }to   { transform: translateY(-100%); }}
+      #loader.fade-out {animation: fadeOut 0.4s ease forwards;animation-delay: 0.4s}
+      @keyframes fadeOut {to { opacity: 0; visibility: hidden; }}
+
+
+      /* ---- Theme Toggle ---- */
       .theme-toggle {margin-left: auto;display: flex;align-items: center}
       .theme-toggle input {display: none}
-      .theme-toggle .slider {cursor: pointer;width: 50px;height: 29px;background: var(--bg);border-radius: 25px;border: 2px solid;position: relative;transition: background 0.3s;}
-      .theme-toggle .slider:after {content: '';position: absolute;left: 3px;top: 3px;width: 19px;height: 19px;background: var(--accent);border-radius: 50%;transition: 0.3s}
-      .theme-toggle input:checked + .slider {background: #000}
-      .theme-toggle input:checked + .slider:after {left: calc(100% - 22px)}
-
+      .theme-toggle .slider {position: relative;cursor: pointer;width: 60px;height: 29px;background: var(--bg);border-radius: 25px;border: 2px solid var(--accent);transition: background 0.3s}
+      .theme-toggle .slider::before {content: "";position: absolute;left: 3px;top: 3px;width: 19px;height: 19px;background: var(--accent);border-radius: 50%;transition: 0.3s;z-index: 2}
+      .theme-toggle .slider::after {content: "☀️";position: absolute;right: 5px;font-size: 16px;opacity: 1;transition: opacity 0.3s;z-index: 1}
+      .theme-toggle input:checked + .slider::before {left: calc(100% - 22px)}
+      .theme-toggle input:checked + .slider::after {content: "🌙";left: 5px;right: auto;display: contents}
 
       /* ---- Header ---- */
       .header{background:var(--bg)}
-      .header-inner{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;padding:18px; border-bottom:2px solid var(--accent)}
+      .header-inner{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;padding:18px; border-bottom:2px solid var(--accent); animation: gradientMove 4s ease infinite;}
       .brand{display:flex;align-items:center;gap:12px}
       .logo-circle{width:34px;height:34px;border: 2px solid var(--accent);border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700}
       .nav{margin-left:18px;}
       .nav a{color:var(--accent);margin-right:18px;font-weight:600;text-decoration: none;}
       .nav a.active{color:var(--accent)}
+      @keyframes gradientMove {0% { background-position: 0% 50%; }50% { background-position: 100% 50%; }100% { background-position: 0% 50%; }}
 
       /* ---- CV ---- */
-      .cv-button {padding: 8px 16px;background-color: var(--accent);color: var(--bg);border: none;border-radius: 4px;cursor: pointer;font-weight: 600}
+      .cv-button {position: relative;padding: 10px 24px;background: var(--bg);border: 2px solid var(--accent);color: var(--accent);font-weight: 600;border-radius: 50px;cursor: pointer;overflow: hidden;transition: color 0.3s ease}
+      .cv-button::before {content: "";position: absolute;top: 0;left: -100%;width: 100%;height: 100%;background: var(--accent);transition: left 0.4s ease;z-index: 0}
+      .cv-button span {position: relative;z-index: 1}
+      .cv-button:hover::before {left: 0}
+      .cv-button:hover {color: var(--bg)}
       .modal {position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.9);display: flex;justify-content: center;align-items: center;display: none}
       .modal-content {position: relative;width: auto;height: auto;max-width: auto;max-height: auto;overflow: hidden;background: transparent;display: flex;justify-content: center;align-items: center;border-radius: 8px}
       .cv-image {max-width: 100%;max-height: 100%;object-fit: contain;border-radius: 0px;}
@@ -46,38 +69,39 @@
       .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:2px solid var(--accent);padding:26px;border-radius:var(--radius)}
       .profile-pic{width:220px;height:220px;margin:0 auto;border-radius:50%;background:var(--bg);display:block;overflow:hidden;border:5px solid var(--accent)}
       .profile-pic img{width:100%;height:100%;object-fit:cover;display:block}
-      .name{text-align:center;margin-top:18px;font-size:24px;font-weight:600}
+      .name{text-align:center;margin-top:18px;font-size:32px;font-weight:600}
       .role{text-align:center;color:var(--third);margin-top:6px;font-size: 20px;font-weight: 400;}
       .contact{display:block;margin:18px auto 8px auto;padding:10px 14px;border-radius:8px;background:var(--accent);color:var(--bg);font-weight:700;width:85%;text-align:center;text-decoration: none;}
-      .meta{margin-top:12px;color:var(--accent);font-size:15px;text-align:center}
+      .meta{margin-top:12px;color:var(--accent);font-size:16px;text-align:center}
       .list{margin-top:18px;border-top:2px solid rgba(43,51,63,1);padding-top:14px;text-align: center;}
-      .list h4{color:var(--accent);margin-bottom:8px;font-size: 18px;}
-      .lang{color:var(--accent);font-size:15px}
+      .list h4{color:var(--accent);margin-bottom:8px;font-size: 24px;}
+      .lang{color:var(--accent);font-size:16px}
 
       /* ---- Main presentation ---- */
       .panel{background:var(--bg);padding:22px;border-radius:var(--radius);border:2px solid var(--accent); border-radius: 3.375rem;}
-      .hero h1{font-size:36px;margin-bottom:8px; font-weight: 600;border-bottom:2px solid var(--accent)}
+      .hero h1{font-size:3.2rem;margin-bottom:8px; font-weight: 600;border-bottom:2px solid var(--accent)}
       .hero p{color:var(--accent);font-size:16px}
 
+      /* ---- Stack Section ---- */
       .stack{margin-top:60px; margin-bottom: 15px}
-      .stack .title{font-weight:600;font-size:2rem ;margin-bottom:12px;border-bottom:2px solid var(--accent)}
+      .stack .title{font-weight:600;font-size:2.5rem ;margin-bottom:12px;border-bottom:2px solid var(--accent)}
       .badges{display:flex;flex-wrap:wrap;gap:12px}
       .badge{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#161b22;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-weight:450; font-size: 1.1rem;}
 
       /* ---- Competences / Experiences / Projects ---- */
       .section{margin-top:80px;}
-      .section h3{font-size:2rem;margin-bottom:50px;font-weight: 600;justify-content: center; display: grid;}
+      .section h3{font-size:3rem;margin-bottom:50px;font-weight: 600;justify-content: center; display: grid;}
       .exp{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.02)}
       .exp .dot{width:46px;height:46px;border-radius:10px;background:#0a0d0f;display:flex;align-items:center;justify-content:center}
       .exp .body{flex:1}
       .exp .body h4{font-size:15px}
       .exp .body p{color:var(--muted);font-size:14px;margin-top:6px}
       
-      /* ==== SECTION BULLES ==== */
+      /* ---- SECTION BULLES ---- */
       .bubbles-section {text-align: center;}
       .bubbles-grid {display: flex;justify-content: center;gap: 200px;flex-wrap: wrap;}
       .bubbles-column {display: grid;grid-template-columns: repeat(2, 1fr);gap: 40px;justify-items: center;}
-      .bubbles-column h3 {grid-column: span 2;font-size: 20px;margin-bottom: 20px;color: var(--accent);margin-bottom: -20px;}
+      .bubbles-column h3 {grid-column: span 2;font-size: 1.5rem;margin-bottom: 20px;color: var(--accent);margin-bottom: -20px;}
       .bubble {position: relative;width: 80px;height: 80px;border-radius: 50%;display: flex;justify-content: center;align-items: center;cursor: pointer;transition: transform 0.3s ease;}
       .bubble::before {content: "";position: absolute;inset: 0;border-radius: 50%;filter: blur(25px);z-index: -1;}
       .bubble .inner {width: 60%;height: 60%;border-radius: 20%;background: inherit;background-blend-mode: multiply;background-color: rgba(0,0,0,0.3);display: flex;justify-content: center;align-items: center;font-size: 1.8rem;color: white;}
@@ -91,18 +115,22 @@
       .green {background: radial-gradient(circle at 30% 30%, #6eecd0, #9fe4f4);}
       .orange {background: radial-gradient(circle at 30% 30%, #ffc7a1, #ff7849);}
 
-      /* ==== SECTION CARTES ==== */
-      .projects {display: grid;grid-template-columns: repeat(3, 1fr);gap: 40px;width: 99%;max-width: 1000rem;}
-      .projects .card {position: relative;overflow: hidden;border-radius: 16px;box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);cursor: pointer;background: var(--bg);height: 12rem;width: 20rem;  display: flex; justify-content: center;align-items: center; }
-      .projects .card img {width: 121%;height: 191px;object-fit: cover;display: block;}
-
-      .projects-header {display: flex;justify-content: center;align-items: center;gap: 1rem;margin-bottom: 2rem;}
+      /* ---- SECTION CARTES ---- */ 
+      .projects-slider {position: relative;overflow: hidden;width: 100%;min-height: 15rem}
+      .projects-header {display: flex;align-items: center;justify-content: space-between;width: 100%;max-width: 600px;margin: 0 auto 2rem auto;position: relative}
+      .projects-header h3 {flex: 1;text-align: center;white-space: nowrap}
+      .projects {display: grid;grid-template-columns: repeat(3, 1fr);gap: 40px;width: 100%;max-width: 100rem;transition: transform 0.6s ease, opacity 0.6s ease;position: absolute;top: 0;left: 0;opacity: 0;transform: translateX(100%);pointer-events: none}
+      .projects.active {opacity: 1;transform: translateX(0);pointer-events: auto;position: relative}
+      .projects.exit-left {transform: translateX(-100%);opacity: 0}
+      .projects.exit-right {transform: translateX(100%);opacity: 0}
+      .projects .card {position: relative;overflow: hidden;border-radius: 16px;box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);cursor: pointer;background: var(--bg);height: 12rem;width: 20rem; display: flex; justify-content: center;align-items: center} 
+      .projects .card img {width: 121%;height: 191px;object-fit: cover;display: block;} 
+      .projects-header {display: flex;justify-content: center;align-items: center;margin-bottom: 2rem;} 
       .arrow-btn {background: var(--accent);border: none;color: var(--bg);font-size: 1.6rem;font-weight: bold;width: 30px;height: 30px;border-radius: 12px;cursor: pointer;transition: transform 0.2s ease, background 0.2s ease;display: flex;justify-content: center;line-height: 1;margin-bottom: 50px}
-      .arrow-btn:hover {transform: scale(1.15);background: color-mix(in srgb, var(--accent) 90%, white 10%)}
-
+      .arrow-btn:hover {transform: scale(1.15);background: color-mix(in srgb, var(--accent) 90%, white 10%);}
 
       /* Overlay au survol */
-      .overlay {position: absolute;inset: 0;background: rgba(0, 0, 0, 0.85);color: white;opacity: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;padding: 20px;text-align: center;transition: opacity 0.3s ease-in-out;}
+      .overlay {position: absolute;inset: 0;background: rgba(0, 0, 0, 0.85);color: white;opacity: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;padding: 20px;text-align: center;transition: opacity 0.3s ease-in-out}
       .card:hover .overlay {opacity: 1;}
       .overlay h3 {font-size: 20px;margin-bottom: 10px;}
       .overlay p {font-size: 14px;margin-bottom: 10px;}
@@ -110,25 +138,24 @@
       .tech {display: flex;gap: 8px;margin-top: 10px;flex-wrap: wrap;}
       .tech span {background: rgba(255, 255, 255, 0.2);padding: 4px 8px;border-radius: 8px;font-size: 12px;}
 
-      /* ==== SECTION EXPERIENCE ==== */
+      /* ---- SECTION EXPERIENCE ---- */
       .timeline-wrapper {position: relative;width: 99%;max-width: 1000rem;margin: 0 auto;margin-top: 80px;}
-      .timeline-line {position: absolute;left: 50%;width: 5px;background: var(--accent);transform: translateX(-50%);transition: height 0.25s ease, top 0.25s ease;z-index: 0;}
+      .timeline-line {position: absolute;left: 50%;width: 5px;background: var(--accent);transform: translateX(-50%);transition: height 0.25s ease, top 0.25s ease;z-index: 0}
       .item-header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;}
-      .item-header h4 {font-size: 18px;}
-      .timeline-item {position: relative;width: 45%;padding: 25px 15px;background: var(--bg);border-radius: 15px;box-shadow: 0 0 8px var(--accent);transition: all 0.6s ease-out;margin: 70px 0;z-index: 1;}
-      .date-badge {background: var(--accent);color: var(--bg);padding: 4px 10px;border-radius: 12px;font-size: 0.8rem;font-weight: 600;white-space: nowrap;}
-
+      .item-header h4 {font-size: 24px;}
+      .timeline-item {position: relative;width: 45%;padding: 25px 15px;background: var(--bg);border-radius: 15px;box-shadow: 0 0 8px var(--accent);transition: all 0.6s ease-out;margin: 70px 0;z-index: 1}
+      .date-badge {background: var(--accent);color: var(--bg);padding: 4px 10px;border-radius: 12px;font-size: 0.8rem;font-weight: 600;white-space: nowrap}
       .timeline-item:nth-child(odd) {left: 0;}
       .timeline-item:nth-child(even) {left: 55%;}
 
-      /* ==== SECTION CONTACT ==== */
+      /* ---- SECTION CONTACT ---- */
       .contact-container {display: -webkit-inline-box;gap: 40px;margin-left: 14rem;}
 
       /* Form */
       .contact-form {display: grid;width: 100%; /* prends un peu plus d'espace */margin: 0 auto;}
-      .contact-form input, .contact-form textarea { background: transparent;border: 3px solid var(--accent);padding: 10px; margin-bottom: 15px;color: var(--accent);outline: none;border-radius: 10px;}
+      .contact-form input, .contact-form textarea { background: transparent;border: 3px solid var(--accent);padding: 10px; margin-bottom: 15px;color: var(--accent);outline: none;border-radius: 10px}
       .contact-form textarea {resize: none;height: 120px;}
-      .contact-form button {background: #2c80d3;border: none;color: #fff;padding: 2px; border-radius: 4px; cursor: pointer; transition: background 0.3s; display: flex; justify-content: center; }
+      .contact-form button {background: #2c80d3;border: none;color: #fff;padding: 2px; border-radius: 4px; cursor: pointer; transition: background 0.3s; display: flex; justify-content: center}
       .contact-form button:hover {background: #1f5f9d;}
       .contact-form .send-icon {width: 30px; height: 30px;}
 
@@ -141,16 +168,47 @@
       .info-item img {width: 30px; height: 30px;object-fit: contain;filter: grayscale(100%);}
       .info-item span {font-size: 20px; font-weight: 10rem;}
 
-      /* ---- Responsive ---- */
-      @media (max-width: 768px) {.timeline-item {width: 100%;left: 0 !important;margin-left: 0;}.timeline-item::before {left: -100px;}.timeline-line {left: 20px;}}
-      @media (max-width:980px){.container{grid-template-columns:1fr;}}
+      /* ========================= */
+      /*   RESPONSIVE OPTIMISATION */
+      /* ========================= */
+
+      @media (max-width: 1024px) {
+        .container {grid-template-columns: 1fr;gap: 20px;padding: 0 12px}
+        .projects {grid-template-columns: repeat(2, 1fr);gap: 20px}
+        .bubbles-grid {gap: 80px}
+        .contact-container {margin-left: 0;gap: 20px;flex-wrap: wrap}
+      }
+      @media (max-width: 768px) {
+        .hero h1 {font-size: 2.4rem}
+        .section h3 {font-size: 2.2rem;margin-bottom: 30px}
+        .name {font-size: 26px}
+        .role {font-size: 18px}
+        .projects {grid-template-columns: 1fr;gap: 16px}
+        .projects .card {width: 100%;height: auto}
+        .projects .card img {width: 100%;height: auto}
+        .bubbles-grid {gap: 40px}
+        .bubbles-column {grid-template-columns: 1fr;gap: 20px}
+        .timeline-item {width: 100%;left: 0 !important;margin-left: 0;}
+        .timeline-line {left: 20px}
+        .contact-container {display: flex;flex-direction: column;margin-left: 0;gap: 20px}
+        .contact-form {width: 100%}
+      }
+      @media (max-width: 480px) {
+        .hero h1 {font-size: 2rem}
+        .section h3 {font-size: 1.8rem}
+        .name {font-size: 22px}
+        .role {font-size: 16px}
+        .stack .title {font-size: 1.8rem}
+        .container {padding: 0 8px;gap: 16px}
+      }
 
     </style>
   </head>
   <body>
+    <div id="loader"><span>AD</span></div>
     <!-- Header -->
     <header>
-      <div class="header-inner">
+      <div class="header-inner fade-in-up">
         <div class="brand">
           <div class="logo-circle">AD</div>
           <nav class="nav">
@@ -160,7 +218,7 @@
             <a href="#contact">Contact</a>
           </nav>
         </div>
-        <button class="cv-button" id="cvBtn">CV</button>
+        <button class="cv-button" id="cvBtn"><span>CV</span></button>
         <div class="theme-toggle">
           <input type="checkbox" id="switch" />
           <label for="switch" class="slider"></label>
@@ -180,7 +238,7 @@
     <main class="container">
       <!-- SIDEBAR -->
       <aside>
-        <div class="card">
+        <div class="card fade-in-up">
           <div class="profile-pic" id="profilePic">
             <img src="assets/portrait.png" alt="photo">
           </div>
@@ -197,7 +255,7 @@
 
       <!-- MAIN CONTENT -->
       <section>
-        <div class="panel hero">
+        <div class="panel hero fade-in-up">
           <small>Dourel Andy / portfolio.md</small>
           <h1>BIENVENUE SUR <span style="color:var(--third)">MON PORTFOLIO</span></h1>
           <p>
@@ -210,28 +268,8 @@
             <div class="title">STACK</div>
             <section class="bubbles-section">
               <div class="bubbles-grid">
-                <!-- FRONTEND -->
-                <div class="bubbles-column">
-                  <h3>DÉVELOPPEMENT</h3>
-                  <div class="bubble yellow">
-                    <div class="inner"><img src="assets/python.png" alt="Python" style="width:36px;height:36px"></div>
-                    <p class="date-badge">Python</p>
-                  </div>
-                  <div class="bubble blue">
-                    <div class="inner"><img src="assets/C++.png" alt="C++" style="width:34px;height:37px"></div>
-                    <p class="date-badge">C++</p>
-                  </div>
-                  <div class="bubble green">
-                    <div class="inner"><img src="assets/java.png" alt="Java" style="width:40px;height:40px"></div>
-                    <p class="date-badge">Java</p>
-                  </div>
-                  <div class="bubble pink">
-                    <div class="inner"><img src="assets/js.png" alt="Javascript" style="width:40px;height:40px"></div>
-                    <p class="date-badge">Javascript</p>
-                  </div>
-                </div>
                 <!-- BACKEND & TOOLS -->
-                <div class="bubbles-column">
+                <div class="bubbles-column fade-in-up">
                   <h3>CYBERSÉCURITÉ</h3>
                   <div class="bubble pink long-text">
                     <div class="inner"><img src="assets/vulnerability-management.png" alt="Gestion des vulnérabilités" style="width:36px;height:36px"></div>
@@ -250,6 +288,26 @@
                     <p class="date-badge">ISO 27001</p>
                   </div>
                 </div>
+                <!-- FRONTEND -->
+                <div class="bubbles-column fade-in-up">
+                  <h3>DÉVELOPPEMENT</h3>
+                  <div class="bubble yellow">
+                    <div class="inner"><img src="assets/python.png" alt="Python" style="width:36px;height:36px"></div>
+                    <p class="date-badge">Python</p>
+                  </div>
+                  <div class="bubble blue">
+                    <div class="inner"><img src="assets/C++.png" alt="C++" style="width:34px;height:37px"></div>
+                    <p class="date-badge">C++</p>
+                  </div>
+                  <div class="bubble green">
+                    <div class="inner"><img src="assets/java.png" alt="Java" style="width:40px;height:40px"></div>
+                    <p class="date-badge">Java</p>
+                  </div>
+                  <div class="bubble pink">
+                    <div class="inner"><img src="assets/js.png" alt="Javascript" style="width:40px;height:40px"></div>
+                    <p class="date-badge">Javascript</p>
+                  </div>
+                </div>
               </div>
             </section>
           </div>
@@ -258,83 +316,95 @@
         <!-- PROJETS -->
         <div id="projects" class="section">
           <div class="projects-header">
-            <button class="arrow-btn">‹</button>
+            <button class="arrow-btn" id="prev">‹</button>
             <h3 id="projects-title">PROJETS SCOLAIRES</h3>
-            <button class="arrow-btn">›</button>
+            <button class="arrow-btn" id="next">›</button>
           </div>
 
-          <!-- Projets scolaires (affichés en premier) -->
-          <div class="projects" id="school-projects">
-            <div class="card">
-              <img src="assets/CesiEAT.PNG" alt="CesiEAT">
-              <div class="overlay">
-                <h3>CesiEAT</h3>
-                <p>Création d'une application similaire à UberEAT®.</p>
-                <p class="date">2023</p>
-                <div class="tech">
-                  <span>Java</span><span>C++</span><span>JS</span>
-                </div>
-              </div>
+          <!-- SLIDER CONTAINER -->
+          <div class="projects-slider">
+            <!-- Projets scolaires (affichés en premier) --> 
+            <div class="projects active" id="school-projects"> 
+              <div class="card"> <img src="assets/CesiEAT.PNG" alt="CesiEAT"> 
+                <div class="overlay"> 
+                  <h3>CesiEAT</h3> 
+                  <p>Création d'une application similaire à UberEAT®.</p> 
+                  <p class="date">2023</p> 
+                  <div class="tech"> 
+                    <span>Java</span>
+                    <span>C++</span>
+                    <span>JS</span> 
+                  </div> 
+                </div> 
+              </div> 
+              <div class="card"> 
+                <img src="assets/CESIGame.PNG" alt="CESI Game"> 
+                <div class="overlay"> 
+                  <h3>CESI Game</h3> 
+                  <p>Jeu de plateforme avec obstacles à plusieurs joueurs.</p> 
+                  <p class="date">2024</p> 
+                  <div class="tech"> 
+                    <span>C++</span>
+                    <span>Unity</span>
+                    <span>VR</span> 
+                  </div> 
+                </div> 
+              </div> 
+              <div class="card"> 
+                <img src="assets/usine30.PNG" alt="Usine 3.0"> 
+                <div class="overlay"> 
+                  <h3>Usine 3.0</h3> 
+                  <p>Simulation de gestion de projet pour la mise en oeuvre d'une usine à l'international.</p> 
+                  <p class="date">2024</p> 
+                  <div class="tech"> 
+                    <span>AMDEC</span>
+                    <span>RACI</span>
+                    <span>GANTT</span> 
+                  </div> 
+                </div> 
+              </div> 
             </div>
-            <div class="card">
-              <img src="assets/CESIGame.PNG" alt="CESI Game">
-              <div class="overlay">
-                <h3>CESI Game</h3>
-                <p>Jeu de plateforme avec obstacles à plusieurs joueurs.</p>
-                <p class="date">2024</p>
-                <div class="tech">
-                  <span>C++</span><span>Unity</span><span>VR</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <img src="assets/usine30.PNG" alt="Usine 3.0">
-              <div class="overlay">
-                <h3>Usine 3.0</h3>
-                <p>Simulation de gestion de projet pour la mise en oeuvre d'une usine à l'international.</p>
-                <p class="date">2024</p>
-                <div class="tech">
-                  <span>AMDEC</span><span>RACI</span><span>GANTT</span>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Projets personnels (masqués au début) -->
-          <div class="projects" id="personal-projects" style="display:none;">
-            <div class="card">
-              <img src="assets/kilometrepro.png" alt="KilometrePro">
-              <div class="overlay">
-                <h3>KilometrePro</h3>
-                <p>Application pour le suivi des frais kilométriques.</p>
-                <p class="date">En cours</p>
-                <div class="tech">
-                  <span>Dart</span><span>Flutter</span><span>GCP</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <img src="assets/1001games.png" alt="1001 Jeux">
-              <div class="overlay">
-                <h3>1001 jeux</h3>
-                <p>Jeu vidéo permettant de jouer à plusieurs mini jeux.</p>
-                <p class="date">En cours</p>
-                <div class="tech">
-                  <span>C++</span><span>Unity</span><span>Blender</span>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <img src="assets/VocalEase.png" alt="VocalEase">
-              <div class="overlay">
-                <h3>VocalEase</h3>
-                <p>Utilisation d'un ordinateur par la voix uniquement.</p>
-                <p class="date">Juin 2025</p>
-                <div class="tech">
-                  <span>Python</span><span>VOSK</span>
-                </div>
-              </div>
-            </div>
+            <!-- Projets personnels --> 
+            <div class="projects" id="personal-projects"> 
+              <div class="card"> 
+                <img src="assets/kilometrepro.png" alt="KilometrePro"> 
+                <div class="overlay"> 
+                  <h3>KilometrePro</h3> 
+                  <p>Application pour le suivi des frais kilométriques.</p> 
+                  <p class="date">En cours</p> <div class="tech"> 
+                    <span>Dart</span>
+                    <span>Flutter</span>
+                    <span>GCP</span> 
+                  </div> 
+                </div> 
+              </div> 
+              <div class="card"> 
+                <img src="assets/1001games.png" alt="1001 Jeux"> 
+                <div class="overlay"> 
+                  <h3>1001 jeux</h3> 
+                  <p>Jeu vidéo permettant de jouer à plusieurs mini jeux.</p> 
+                  <p class="date">En cours</p> 
+                  <div class="tech"> 
+                    <span>C++</span>
+                    <span>Unity</span>
+                    <span>Blender</span> 
+                  </div> 
+                </div> 
+              </div> 
+              <div class="card"> 
+                <img src="assets/VocalEase.png" alt="VocalEase"> 
+                <div class="overlay"> 
+                  <h3>VocalEase</h3> 
+                  <p>Utilisation d'un ordinateur par la voix uniquement.</p> 
+                  <p class="date">Juin 2025</p> 
+                  <div class="tech">
+                    <span>Python</span>
+                    <span>VOSK</span> 
+                  </div> 
+                </div> 
+              </div> 
+            </div> 
           </div>
         </div>
 
@@ -342,43 +412,52 @@
         <div id="experiences" class="section timeline-wrapper">
           <h3 class="section-title">EXPÉRIENCES</h3>
           <div class="timeline-line"></div>
-          <div class="timeline-item"> 
+          <div class="timeline-item fade-in-right"> 
             <div class="content">
               <div class="item-header">
-                <h4>Stage de 2ᵉᵐᵉ année : CESI</h4>
+                <h4>Stage de 2ᵉᵐᵉ année : CESI 🏫</h4>
                 <span class="date-badge">3 mois</span>
               </div>
               <p>Fabrication d'une mini imprimante permettant d'écrire un message depuis un fichier.</p>
+              <span></span>
+              <p style="color:var(--third)">- Langages de programmation : C++</p>
             </div>
           </div>
-          <div class="timeline-item">
+          <div class="timeline-item fade-in-left">
             <div class="content">
               <div class="item-header">
-                <h4>Stage de 3ᵉᵐᵉ année : Capgemini</h4>
+                <h4>Stage de 3ᵉᵐᵉ année : Capgemini 🏦</h4>
                 <span class="date-badge">5 mois</span>
               </div>
               <p>Réalisation d'un programme de détection de forme "clé" permettant la superposition de modèle 3d à l'aide de la réalité augmentée.</p>
+              <span></span>
+              <p style="color:var(--third)">- Langages de programmation : Python</p>
+              <p style="color:var(--third)">- Framework : OpenCV</p>
             </div>
           </div>
-          <div class="timeline-item">
+          <div class="timeline-item fade-in-right">
             <div class="content">
               <div class="item-header">
-                <h4>Stage de 4ᵉᵐᵉ année : Université d'Aalborg (Danemark)</h4>
+                <h4>Stage de 4ᵉᵐᵉ année : Université d'Aalborg (Danemark) ✈</h4>
                 <span class="date-badge">6 mois</span>
               </div>
               <p>Création d'un agent conversationnel capable de lire et mener une réflexion sur les données présentes au sein d'une dashboard connectée.</p>
+              <span></span>
+              <p style="color:var(--third)">- Langages de programmation : Python, R</p>
+              <p style="color:var(--third)">- Frameworks : RASA, Shiny</p>
             </div>
           </div>
-          <div class="timeline-item">
+          <div class="timeline-item fade-in-left">
             <div class="content">
               <div class="item-header">
-                <h4>Stage de 5ᵉᵐᵉ année : Collecte Localisation Satellite (CLS)</h4>
+                <h4>Stage de 5ᵉᵐᵉ année : Collecte Localisation Satellite (CLS) 🪐</h4>
                 <span class="date-badge">6 mois</span>
               </div>
-              <p>- Amélioration du cadre de gestion des vulnérabilités existant.</p>
-              <p>- Test et intégration d'outil de cybersécurité.</p> 
-              <p>- Participation à la résolution des tickets</p>
-              <p>- Prise en compte de la gestion de projet.</p>
+              <p>Amélioration de l'efficacité de la gestion des vulnérabilités mise en place.</p>
+              <span></span>
+              <p style="color:var(--third)">- Intégration d'outils : Cortex, Cyberwatch, Outpost24, Greenbone.</p> 
+              <p style="color:var(--third)">- Résolution de ticket : Phishing, Ouverture de flux, Comissioning</p>
+              <p style="color:var(--third)">- Gestion de projet : GANTT, RACI, PERT, Coût, Temps.</p>
             </div>
           </div>
         </div>
@@ -387,7 +466,6 @@
         <div id="contact" class="section">
           <h3>CONTACT</h3>
           <div class="contact-container">
-
             <!-- Form -->
             <form id="contact-form" action="https://formspree.io/f/xxxxx" method="POST" class="contact-form">
               <div class="row">

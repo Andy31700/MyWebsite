@@ -10,7 +10,7 @@
       :root{--bg:#fefdf0; --panel:#fefdf0; --accent:#000000; --card-border:rgba(255,255,255,0.03); --muted:#555; --third:#1e6f9f;--glass: linear-gradient(180deg, var(--card-border), rgba(0,0,0,0.02));--radius:12px; --max-width:100rem; font-family: "Manrope.ttf";}
       *{box-sizing:border-box;margin:0;padding:1.5px}
       html,body{height:100%}
-      body{font-family: 'Manrope', sans-serif;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45; overflow-x: hidden}
+      body{font-family: 'Manrope', sans-serif;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45; overflow-x: hidden; margin: 0;padding: 0}
       body.dark {--bg:#0e1117;--accent:#fefdf0;--muted:#aaa;--third:#ff8a73;--card-border:#fefdf0}
       body.dark .info-item img {filter: brightness(0) invert(1);}
       body, .card, .panel, .projects .card, .timeline-item {transition: background-color 0.9s ease, color 0.9s ease, border-color 0.9s ease}
@@ -56,14 +56,14 @@
       .cv-button:hover::before {left: 0}
       .cv-button:hover {color: var(--bg)}
       .modal {position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.9);display: flex;justify-content: center;align-items: center;display: none}
-      .modal-content {position: relative;width: auto;height: auto;max-width: auto;max-height: auto;overflow: hidden;background: transparent;display: flex;justify-content: center;align-items: center;border-radius: 8px}
-      .cv-image {max-width: 100%;max-height: 100%;object-fit: contain;border-radius: 0px;}
+      .modal-content {position: relative;width: auto;height: auto;max-width: auto;max-height: 90vh;overflow: hidden;background: transparent;display: flex;justify-content: center;align-items: center;border-radius: 8px; overflow-y: auto;}
+      .cv-image {max-width: 100%;max-height: 100%;object-fit: contain;border-radius: 0px;width: 100%;height: auto}
       .close-btn {position: absolute;top: 10px;right: 10px;font-size: 28px;font-weight: bold;background: none;border: none;cursor: pointer;color: #333;z-index: 10;transition: color 0.2s}
       .close-btn:hover {color: red}
 
 
       /* ---- Layout ---- */
-      .container{max-width:var(--max-width);margin:28px auto;display:grid;grid-template-columns:350px 1fr;gap:40px;padding:0 16px}
+      .container{max-width:var(--max-width);margin:28px auto;display:grid;grid-template-columns:350px 1fr;gap:40px;padding:0 16px; padding: 0 15px}
 
       /* ---- Sidebar profile ---- */
       .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:2px solid var(--accent);padding:26px;border-radius:var(--radius)}
@@ -467,7 +467,7 @@
           <h3>CONTACT</h3>
           <div class="contact-container">
             <!-- Form -->
-            <form id="contact-form" action="https://formspree.io/f/xxxxx" method="POST" class="contact-form">
+            <form id="contact-form" action="https://formspree.io/f/meolbwak" method="POST" class="contact-form">
               <div class="row">
                 <input type="text" name="nom" placeholder="Nom" required>
                 <input type="text" name="prenom" placeholder="Prénom" required>

@@ -3,6 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // =============================
   // Toggle Dark / Light Mode
   // =============================
+  const loader = document.getElementById('loader');
+  setTimeout(() => {
+    loader.classList.add('fade-out');
+  }, 1600);
+
+  // =============================
+  // Toggle Dark / Light Mode
+  // =============================
   const switchInput = document.getElementById('switch');
   const body = document.body;
 
@@ -23,6 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Révéler les bulles et projets au scroll
+  const animatedElements = document.querySelectorAll('.fade-in-up', '.fadin-in-left', 'fadin-in-right');
+
+  const revealOnScroll = () => {
+    const triggerBottom = window.innerHeight * 0.85;
+    animatedElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < triggerBottom) {
+        el.classList.add('show');
+      }
+    });
+  };
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
 
   // =============================
   // CV Modal
@@ -54,53 +77,77 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =============================
-// Timeline animation au scroll
-// =============================
-const timelineLine = document.querySelector('.timeline-line');
-const timelineWrapper = document.querySelector('.timeline-wrapper');
+  // Slider section projet
+  // =============================
+  const projectsTitle = document.getElementById("projects-title");
+  const schoolProjects = document.getElementById("school-projects");
+  const personalProjects = document.getElementById("personal-projects");
 
-const timelineItems = document.querySelectorAll('.timeline-item');
+  let showingSchool = true;
 
-const revealTimelineItems = () => {
-  const triggerBottom = window.innerHeight * 0.85;
-  timelineItems.forEach(item => {
-    const top = item.getBoundingClientRect().top;
-    if (top < triggerBottom) {
-      item.style.opacity = '1';
-      item.style.transform = 'translateY(0)';
-    }
+  function toggleProjects(direction) {
+    const current = showingSchool ? schoolProjects : personalProjects;
+    const next = showingSchool ? personalProjects : schoolProjects;
+    current.classList.remove("active");
+    current.classList.add(direction === "next" ? "exit-left" : "exit-right");
+    setTimeout(() => {
+      current.classList.remove("exit-left", "exit-right");
+    }, 600);
+    next.classList.add("active");
+    projectsTitle.textContent = showingSchool ? "PROJETS PERSONNELS" : "PROJETS SCOLAIRES";
+    showingSchool = !showingSchool;
+  }
+
+  document.getElementById("next").addEventListener("click", () => toggleProjects("next"));
+  document.getElementById("prev").addEventListener("click", () => toggleProjects("prev"));
+
+  // =============================
+  // Timeline animation au scroll (ligne fluide)
+  // =============================
+  const timelineLine = document.querySelector('.timeline-line');
+  const timelineWrapper = document.querySelector('.timeline-wrapper');
+  const timelineItems = document.querySelectorAll('.timeline-item');
+
+  const revealTimelineItems = () => {
+    const triggerBottom = window.innerHeight * 0.85;
+    timelineItems.forEach(item => {
+      const top = item.getBoundingClientRect().top;
+      if (top < triggerBottom) {
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      }
+    });
+  };
+
+  const animateTimelineLine = () => {
+    if (!timelineWrapper || !timelineLine) return;
+
+    const wrapperTop = timelineWrapper.offsetTop;
+    const wrapperHeight = timelineWrapper.offsetHeight;
+    const firstItem = timelineItems[0];
+    const lastItem = timelineItems[timelineItems.length - 1];
+    
+    const firstCenter = firstItem.offsetTop + firstItem.offsetHeight / 2;
+    const lastCenter = lastItem.offsetTop + lastItem.offsetHeight / 2;
+    const totalLineHeight = lastCenter - firstCenter;
+
+    const scrollY = window.scrollY + window.innerHeight / 2;
+    let progress = (scrollY - (wrapperTop + firstCenter)) / totalLineHeight;
+
+    progress = Math.max(0, Math.min(1, progress));
+
+    timelineLine.style.top = firstCenter + 'px';
+    timelineLine.style.height = (totalLineHeight * progress) + 'px';
+  };
+
+  window.addEventListener('scroll', () => {
+    revealTimelineItems();
+    animateTimelineLine();
   });
-};
+  window.addEventListener('resize', animateTimelineLine);
 
-const animateTimelineLine = () => {
-  if (!timelineWrapper || !timelineLine) return;
-
-  const wrapperTop = timelineWrapper.offsetTop;
-  const wrapperHeight = timelineWrapper.offsetHeight;
-  const firstItem = timelineItems[0];
-  const lastItem = timelineItems[timelineItems.length - 1];
-  
-  const firstCenter = firstItem.offsetTop + firstItem.offsetHeight / 2;
-  const lastCenter = lastItem.offsetTop + lastItem.offsetHeight / 2;
-  const totalLineHeight = lastCenter - firstCenter;
-
-  const scrollY = window.scrollY + window.innerHeight / 2; // milieu écran
-  let progress = (scrollY - (wrapperTop + firstCenter)) / totalLineHeight;
-
-  progress = Math.max(0, Math.min(1, progress));
-
-  timelineLine.style.top = firstCenter + 'px';
-  timelineLine.style.height = (totalLineHeight * progress) + 'px';
-};
-
-window.addEventListener('scroll', () => {
   revealTimelineItems();
   animateTimelineLine();
-});
-window.addEventListener('resize', animateTimelineLine);
-
-revealTimelineItems();
-animateTimelineLine();
 
   // =============================
   // Fallback image profil
@@ -133,33 +180,4 @@ animateTimelineLine();
       }
     });
   }
-
-  // =============================
-  // Toggle Projets scolaires/personnels
-  // =============================
-  const projectsTitle = document.getElementById("projects-title");
-  const personalProjects = document.getElementById("personal-projects");
-  const schoolProjects = document.getElementById("school-projects");
-
-  if (projectsTitle && personalProjects && schoolProjects) {
-    let showingSchool = true;
-
-    const toggleProjects = () => {
-      if (showingSchool) {
-        projectsTitle.textContent = "PROJETS PERSONNELS";
-        schoolProjects.style.display = "none";
-        personalProjects.style.display = "grid";
-      } else {
-        projectsTitle.textContent = "PROJETS SCOLAIRES";
-        personalProjects.style.display = "none";
-        schoolProjects.style.display = "grid";
-      }
-      showingSchool = !showingSchool;
-    };
-
-    document.querySelectorAll(".arrow-btn").forEach(btn => {
-      btn.addEventListener("click", toggleProjects);
-    });
-  }
-
 });

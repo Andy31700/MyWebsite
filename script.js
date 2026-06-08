@@ -3,8 +3,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // =============================
   // Toggle Dark / Light Mode
   // =============================
+  
+  setTimeout(() => {
+    loader.classList.add('fade-out');
+  }, 1600);
+
+  // =============================
+  // Toggle Dark / Light Mode
+  // =============================
   const switchInput = document.getElementById('switch');
   const body = document.body;
+  const loader = document.getElementById('loader');
+
+  setTimeout(() => {
+    loader.classList.add('fade-out');
+  }, 1600);
 
   if (switchInput) {
     // Appliquer le thème sauvegardé
@@ -23,6 +36,52 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Révéler les bulles et projets au scroll
+  const animatedElements = document.querySelectorAll('.fade-in-up', '.fadin-in-left', 'fadin-in-right');
+
+  const revealOnScroll = () => {
+    const triggerBottom = window.innerHeight * 0.85;
+    animatedElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < triggerBottom) {
+        el.classList.add('show');
+      }
+    });
+  };
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
+
+  // =============================
+  // Loader Matrix
+  // =============================
+
+  // Créer des colonnes matrix
+  function createMatrixColumns() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+    
+    for (let i = 0; i < 20; i++) {
+      const column = document.createElement('div');
+      column.className = 'matrix-column';
+      column.style.left = (i * 5) + '%';
+      column.style.animationDelay = -(Math.random() * 3) + 's';
+      column.style.animationDuration = (3 + Math.random()) + 's';
+      
+      let text = '';
+      for (let j = 0; j < 30; j++) {
+        text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+      }
+      column.innerHTML = text;
+      
+      loader.appendChild(column);
+    }
+  }
+
+  createMatrixColumns();
+
+  setTimeout(() => {
+    loader.classList.add('fade-out');
+  }, 2200);
 
   // =============================
   // CV Modal
@@ -54,11 +113,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =============================
-  // Timeline animation au scroll
+  // Slider section projet
   // =============================
-  const timelineItems = document.querySelectorAll('.timeline-item');
+  const projectsTitle = document.getElementById("projects-title");
+  const schoolProjects = document.getElementById("school-projects");
+  const personalProjects = document.getElementById("personal-projects");
+
+  let showingSchool = true;
+
+  function toggleProjects(direction) {
+    const current = showingSchool ? schoolProjects : personalProjects;
+    const next = showingSchool ? personalProjects : schoolProjects;
+    current.classList.remove("active");
+    current.classList.add(direction === "next" ? "exit-left" : "exit-right");
+    setTimeout(() => {
+      current.classList.remove("exit-left", "exit-right");
+    }, 600);
+    next.classList.add("active");
+    projectsTitle.textContent = showingSchool ? "PROJETS PERSONNELS" : "PROJETS SCOLAIRES";
+    showingSchool = !showingSchool;
+  }
+
+  document.getElementById("next").addEventListener("click", () => toggleProjects("next"));
+  document.getElementById("prev").addEventListener("click", () => toggleProjects("prev"));
+
+  // =============================
+  // Timeline animation au scroll (ligne fluide)
+  // =============================
   const timelineLine = document.querySelector('.timeline-line');
   const timelineWrapper = document.querySelector('.timeline-wrapper');
+  const timelineItems = document.querySelectorAll('.timeline-item');
 
   const revealTimelineItems = () => {
     const triggerBottom = window.innerHeight * 0.85;
@@ -72,21 +156,24 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const animateTimelineLine = () => {
-    if (!timelineWrapper || !timelineLine || timelineItems.length === 0) return;
+    if (!timelineWrapper || !timelineLine) return;
 
-    let lastVisible = null;
-    timelineItems.forEach(item => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.8) lastVisible = item;
-    });
+    const wrapperTop = timelineWrapper.offsetTop;
+    const wrapperHeight = timelineWrapper.offsetHeight;
+    const firstItem = timelineItems[0];
+    const lastItem = timelineItems[timelineItems.length - 1];
+    
+    const firstCenter = firstItem.offsetTop + firstItem.offsetHeight / 2;
+    const lastCenter = lastItem.offsetTop + lastItem.offsetHeight / 2;
+    const totalLineHeight = lastCenter - firstCenter;
 
-    if (lastVisible) {
-      const first = timelineItems[0];
-      const firstCenter = first.offsetTop + first.offsetHeight / 2;
-      const lastCenter = lastVisible.offsetTop + lastVisible.offsetHeight / 2;
-      timelineLine.style.top = firstCenter + 'px';
-      timelineLine.style.height = (lastCenter - firstCenter) + 'px';
-    }
+    const scrollY = window.scrollY + window.innerHeight / 2;
+    let progress = (scrollY - (wrapperTop + firstCenter)) / totalLineHeight;
+
+    progress = Math.max(0, Math.min(1, progress));
+
+    timelineLine.style.top = firstCenter + 'px';
+    timelineLine.style.height = (totalLineHeight * progress) + 'px';
   };
 
   window.addEventListener('scroll', () => {
@@ -95,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   window.addEventListener('resize', animateTimelineLine);
 
-  // init
   revealTimelineItems();
   animateTimelineLine();
 
@@ -116,6 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (form) {
     form.addEventListener("submit", async function(event) {
       event.preventDefault();
+    // Validation basique
+    const email = form.querySelector('input[type="email"]').value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Veuillez entrer une adresse email valide");
+      return;
+    }
       const response = await fetch(form.action, {
         method: form.method,
         body: new FormData(form),
@@ -132,31 +225,67 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =============================
-  // Toggle Projets scolaires/personnels
+  // Scroll to top button
   // =============================
-  const projectsTitle = document.getElementById("projects-title");
-  const personalProjects = document.getElementById("personal-projects");
-  const schoolProjects = document.getElementById("school-projects");
+  const scrollToTopBtn = document.getElementById('scrollToTop');
 
-  if (projectsTitle && personalProjects && schoolProjects) {
-    let showingSchool = true;
-
-    const toggleProjects = () => {
-      if (showingSchool) {
-        projectsTitle.textContent = "PROJETS PERSONNELS";
-        schoolProjects.style.display = "none";
-        personalProjects.style.display = "grid";
+  if (scrollToTopBtn) {
+    // Afficher/masquer le bouton selon le scroll
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollToTopBtn.classList.add('visible');
       } else {
-        projectsTitle.textContent = "PROJETS SCOLAIRES";
-        personalProjects.style.display = "none";
-        schoolProjects.style.display = "grid";
+        scrollToTopBtn.classList.remove('visible');
       }
-      showingSchool = !showingSchool;
-    };
+    });
 
-    document.querySelectorAll(".arrow-btn").forEach(btn => {
-      btn.addEventListener("click", toggleProjects);
+    // Action au clic
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
   }
 
+  // Debounce pour les événements scroll
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    window.addEventListener('scroll', debounce(() => {
+      revealOnScroll();
+      revealTimelineItems();
+      animateTimelineLine();
+    }, 10));
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Envoi...</span>';
+      
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.reset();
+        submitBtn.innerHTML = '<span>✓ Envoyé</span>';
+        setTimeout(() => {
+          submitBtn.innerHTML = '<img src="assets/send.png" alt="Envoyer" class="send-icon">';
+          submitBtn.disabled = false;
+        }, 3000);
+      } else {
+        alert("Une erreur est survenue. Réessayez.");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<img src="assets/send.png" alt="Envoyer" class="send-icon">';
+      }
+    });
 });

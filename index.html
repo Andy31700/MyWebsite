@@ -11,7 +11,7 @@
     <meta property="og:image" content="https://andy31700.github.io/MyWebsite/assets/portrait.png">
     <meta property="og:url" content="https://andy31700.github.io/MyWebsite/">
     <meta property="og:type" content="website">
-    <link rel="canonical" href="https://votre-domaine.com">
+    <link rel="canonical" href="https://andy31700.github.io">
     <title>Andy Dourel</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <style>
@@ -259,7 +259,7 @@
           </div>
           <div class="name">Andy Dourel</div>
           <div class="role">Ingénieur Cybersécurité</div>
-          <a class="contact" href="mailto:dourel.andy@gmail.com">dourel.andy@gmail.com</a>
+          <a class="contact" href="mailto:dourelandy@gmail.com">dourelandy@gmail.com</a>
           <div class="meta">24 ans · Blagnac, 31700<br><img src="assets/teleport.gif" alt="gif animé" style="width:20px; vertical-align:middle;"><span style="color:#19c615; font-weight:600;">Recherche d'emploi</span><br>🎓 CESI Labège<br>🚗 Véhiculé</div>
           <div class="list">
             <h4>Langues</h4>
@@ -277,7 +277,7 @@
             Diplômé de <span style="color:var(--third)">l'école d'ingénieur du CESI</span> en développement d'application, recherchant actuellement un emploi en tant qu'<span style="color:var(--third)">ingénieur cybersécurité</span>.
             Passionné par la thématique des vulnérabilités depuis mon Projet de Fin d'Etude, j'ai décidé de me spécialiser dans ce domaine. Cela m'a permis
             de développer mes compétences en <span style="color:var(--third)">gestion des vulnérabilités</span>. Outre la cybersécurité, j'accorde une
-            grande importance au <span style="color:var(--third)">développement</span>, car je crois qu'il est possible de pouvoir appliqué mes connaissances en programmation au domaine de la sécurité informatique.
+            grande importance au <span style="color:var(--third)">développement</span>, car je crois qu'il est possible de pouvoir appliquer mes connaissances en programmation au domaine de la sécurité informatique.
           </p>
           <div class="stack">
             <div class="title">STACK</div>
@@ -519,11 +519,14 @@
             const statusEl = document.getElementById('form-status');
             statusEl.textContent = 'Envoi en cours...';
             const { data, error } = await forminit.submit('de3b1a032ew', new FormData(e.target));
+            console.log('data:', data);
+            console.log('error:', error);
             if (error) {
               statusEl.style.color = 'red';
               statusEl.textContent = error.message;
               return;
             }
+            
             statusEl.style.color = 'green';
             statusEl.textContent = 'Message envoyé avec succès !';
             e.target.reset();

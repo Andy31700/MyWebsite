@@ -1,13 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-  // =============================
-  // Toggle Dark / Light Mode
-  // =============================
   
-  setTimeout(() => {
-    loader.classList.add('fade-out');
-  }, 1600);
-
   // =============================
   // Toggle Dark / Light Mode
   // =============================
@@ -52,36 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', revealOnScroll);
   revealOnScroll();
 
-  // =============================
-  // Loader Matrix
-  // =============================
 
-  // Créer des colonnes matrix
-  function createMatrixColumns() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
-    
-    for (let i = 0; i < 20; i++) {
-      const column = document.createElement('div');
-      column.className = 'matrix-column';
-      column.style.left = (i * 5) + '%';
-      column.style.animationDelay = -(Math.random() * 3) + 's';
-      column.style.animationDuration = (3 + Math.random()) + 's';
-      
-      let text = '';
-      for (let j = 0; j < 30; j++) {
-        text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
-      }
-      column.innerHTML = text;
-      
-      loader.appendChild(column);
-    }
-  }
-
-  createMatrixColumns();
-
-  setTimeout(() => {
-    loader.classList.add('fade-out');
-  }, 2200);
 
   // =============================
   // CV Modal
@@ -107,7 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (href.length > 1) {
         e.preventDefault();
         const target = document.querySelector(href);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (target) {
+          const headerHeight = document.querySelector('header')?.offsetHeight ?? 0;
+          const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
       }
     });
   });
@@ -195,34 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // =============================
-  // Formulaire de contact
-  // =============================
-  const form = document.getElementById("contact-form");
-  if (form) {
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
-    // Validation basique
-    const email = form.querySelector('input[type="email"]').value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert("Veuillez entrer une adresse email valide");
-      return;
-    }
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        form.reset();
-        alert("Message envoyé !");
-      } else {
-        alert("Une erreur est survenue. Réessayez.");
-      }
-    });
-  }
+  // Formulaire de contact géré par Forminit (voir script inline en bas du HTML)
 
   // =============================
   // Scroll to top button
@@ -262,30 +202,4 @@ document.addEventListener('DOMContentLoaded', () => {
       revealTimelineItems();
       animateTimelineLine();
     }, 10));
-
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>Envoi...</span>';
-      
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        form.reset();
-        submitBtn.innerHTML = '<span>✓ Envoyé</span>';
-        setTimeout(() => {
-          submitBtn.innerHTML = '<img src="assets/send.png" alt="Envoyer" class="send-icon">';
-          submitBtn.disabled = false;
-        }, 3000);
-      } else {
-        alert("Une erreur est survenue. Réessayez.");
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<img src="assets/send.png" alt="Envoyer" class="send-icon">';
-      }
-    });
 });

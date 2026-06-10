@@ -7,19 +7,32 @@
     <meta name="author" content="Andy Dourel">
     <meta name="keywords" content="cybersécurité, développement, ingénieur, portfolio">
     <meta property="og:title" content="Andy Dourel - Portfolio">
-    <meta property="og:description" content="Ingénieur Cybersécurité recherchant un emploi">
+    <meta property="og:description" content="Ingénieur cybersécurité orienté gestion des vulnérabilités, avec une expérience opérationnelle en autonomie.">
     <meta property="og:image" content="https://andy31700.github.io/MyWebsite/assets/portrait.png">
     <meta property="og:url" content="https://andy31700.github.io/MyWebsite/">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://andy31700.github.io">
-    <title>Andy Dourel</title>
+    <title>Andy Dourel — Ingénieur Cybersécurité</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <style>
       /* ---- Base & Reset ---- */
-      :root{--bg:#fefdf0; --panel:#fefdf0; --accent:#000000; --card-border:rgba(255,255,255,0.03); --muted:#333; --third:#1e6f9f;--glass: linear-gradient(180deg, var(--card-border), rgba(0,0,0,0.02));--radius:12px; --max-width:90%; font-family: "Manrope.ttf";}
-      *{box-sizing:border-box;margin:0;padding:1.5px}
-      html,body{height:100%}
-      body{font-family: 'Manrope', sans-serif;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45; overflow-x: hidden; margin: 0;padding: 0}
+      :root{
+        --bg:#fefdf0; --panel:#fefdf0; --accent:#000000; --card-border:rgba(255,255,255,0.03); --muted:#333; --third:#1e6f9f;
+        --glass: linear-gradient(180deg, var(--card-border), rgba(0,0,0,0.02));
+        --radius:12px; --max-width:90%;
+        /* ---- Type Scale ---- */
+        --text-xs: 0.75rem;    /* 12px — dates, badges */
+        --text-sm: 0.875rem;   /* 14px — body secondaire */
+        --text-base: 1rem;     /* 16px — body principal */
+        --text-md: 1.125rem;   /* 18px — sous-titres */
+        --text-lg: 1.5rem;     /* 24px — titres de section petits */
+        --text-xl: 2rem;       /* 32px — nom sidebar, titres moyens */
+        --text-2xl: 2.5rem;    /* 40px — titres de section */
+        --text-3xl: 3rem;      /* 48px — hero h1 */
+      }
+      *{box-sizing:border-box;margin:0;padding:0}
+      html{height:100%}body{min-height:100%}
+      body{font-family: 'Manrope', sans-serif;background:var(--bg);color:var(--accent);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.45; overflow-x: clip; margin: 0;padding: 0}
       body.dark {--bg:#0e1117;--accent:#fefdf0;--muted:#aaa;--third:#ff8a73;--card-border:#fefdf0}
       body.dark .info-item img {filter: brightness(0) invert(1);}
       body, .card, .panel, .projects .card, .timeline-item {transition: background-color 0.9s ease, color 0.9s ease, border-color 0.9s ease}
@@ -27,7 +40,6 @@
       .fade-in-up.show {opacity: 1;transform: translateY(0)}
       .fade-in-left {opacity: 0;transform: translateX(40px);transition: opacity 0.8s ease, transform 0.8s ease}
       .fade-in-left.show {opacity: 1;transform: translateX(0);}
-      .fade-in-up.show {opacity: 1;transform: translateX(0)}
       .fade-in-right {opacity: 0;transform: translateX(-40px);transition: opacity 0.8s ease, transform 0.8s ease}
       .fade-in-right.show {opacity: 1;transform: translateX(0)}
 
@@ -37,13 +49,29 @@
       .scroll-top-btn:hover {transform: scale(1.1);}
 
       /* ---- Loader ---- */
-      #loader {position: fixed;inset: 0;background: #000;display: flex;justify-content: center;align-items: center;z-index: 9999;overflow: hidden}
-      #loader .matrix-column {position: absolute;top: -50%;color: #0f0;font-family: 'Courier New', monospace;font-size: 14px;animation: matrixFall 3s linear infinite;text-shadow: 0 0 5px #0f0;z-index: 1}
-      @keyframes matrixFall {to { top: 100%; }}
-      #loader .center-portal {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width: 150px;height: 150px;border: 3px solid #0f0;border-radius: 50%;box-shadow: 0 0 20px #0f0, inset 0 0 20px #0f0;z-index: 10}
-      #loader .center-portal::before {content: 'AD';position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);font-size: 3rem;font-weight: 900;color: #0f0;text-shadow: 0 0 10px #0f0}
-      #loader.fade-out {animation: fadeOut 0.4s ease forwards;animation-delay: 0.4s;}
-      @keyframes fadeOut {to { opacity: 0; visibility: hidden; }}
+      #loader {position: fixed; inset: 0; background: #fefdf0; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease; }
+      #loader.fade-out {opacity: 0; visibility: hidden; }
+      .loader-ring {position: relative; width: 160px; height: 160px; display: flex; justify-content: center; align-items: center; }
+      .loader-ring svg {position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+      .loader-ring-track { fill: none; stroke: rgba(128, 128, 128, 0.15); stroke-width: 2; }
+      .loader-ring-fill {fill: none; stroke: #000; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 339.3; stroke-dashoffset: 339.3; animation: ringFill 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+      /* fond intérieur qui devient noir après le cercle */
+      .loader-ring::before {content: ''; position: absolute; width: 145px; height: 145px; border-radius: 50%; background: transparent; z-index: 0; animation: fillIn 0.35s ease forwards; animation-delay: 1.1s; }
+      .loader-initials {font-family: 'Manrope', sans-serif; font-size: 3.4rem; font-weight: 800; color: var(--accent); position: relative; z-index: 1; user-select: none; animation: textFlip 0.35s ease forwards; animation-delay: 1.1s; }
+
+      @keyframes ringFill {
+        from { stroke-dashoffset: 339.3; }
+        to   { stroke-dashoffset: 0; }
+      }
+      @keyframes fillIn {
+        from { background: transparent; }
+        to   { background: #000; }
+      }
+      @keyframes textFlip {
+        from { color: var(--accent); }
+        to   { color: #fefdf0; }
+      }
 
       /* ---- Theme Toggle ---- */
       .theme-toggle {margin-left: auto;display: flex;align-items: center}
@@ -56,7 +84,7 @@
 
       /* ---- Header ---- */
       .header{background:var(--bg)}
-      .header-inner{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;padding:18px; border-bottom:2px solid var(--accent); animation: gradientMove 4s ease infinite;}
+      .header-inner{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;padding:18px; border-bottom:2px solid var(--accent);}
       .brand{display:flex;align-items:center;gap:12px}
       .logo-circle{width:34px;height:34px;border: 2px solid var(--accent);border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700}
       .nav{margin-left:18px;}
@@ -70,11 +98,14 @@
       .cv-button span {position: relative;z-index: 1}
       .cv-button:hover::before {left: 0}
       .cv-button:hover {color: var(--bg)}
-      .modal {position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.9);display: flex;justify-content: center;align-items: center;display: none}
-      .modal-content {position: relative;width: auto;height: auto;max-width: auto;max-height: 90vh;overflow: hidden;background: transparent;display: flex;justify-content: center;border-radius: 8px; overflow-y: auto;}
-      .cv-image {max-width: 100%;max-height: 100%;object-fit: contain;border-radius: 0px;width: 100%;height: auto}
-      .close-btn {position: absolute;top: 10px;right: 10px;font-size: 28px;font-weight: bold;background: none;border: none;cursor: pointer;color: #333;z-index: 10;transition: color 0.2s}
-      .close-btn:hover {color: red}
+      .modal {position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.85);justify-content: center;align-items: center;display: none}
+      .modal-content {position: relative;width: 85vw;max-width: 900px;height: 90vh;background: #fff;border-radius: 12px;overflow: hidden;display: flex;flex-direction: column;}
+      .modal-toolbar {display: flex;justify-content: flex-end;align-items: center;gap: 10px;padding: 10px 14px;background: var(--accent);flex-shrink: 0;}
+      .modal-download-btn {color: var(--bg);font-weight: 600;font-size: var(--text-sm);text-decoration: none;padding: 6px 14px;border: 2px solid var(--bg);border-radius: 20px;transition: background 0.2s, color 0.2s;white-space: nowrap;}
+      .modal-download-btn:hover {background: var(--bg);color: var(--accent);}
+      .close-btn {background: none;border: none;color: var(--bg);font-size: 1.3rem;cursor: pointer;padding: 4px 8px;border-radius: 6px;line-height: 1;transition: background 0.2s;}
+      .close-btn:hover {background: rgba(255,255,255,0.2);}
+      .cv-frame {width: 100%;flex: 1;border: none;display: block;}
 
 
       /* ---- Layout ---- */
@@ -84,52 +115,56 @@
       .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:2px solid var(--accent);padding:5vh;border-radius:var(--radius)}
       .profile-pic{width:220px;height:220px;margin:0 auto;border-radius:50%;background:#000000;display:block;overflow:hidden;border:5px solid var(--accent)}
       .profile-pic img{width:100%;height:100%;object-fit:cover;display:block}
-      .name{text-align:center;margin-top:18px;font-size:34px;font-weight:600}
-      .role{text-align:center;color:var(--third);margin-top:6px;font-size: 24px;font-weight: 500;}
+      .name{text-align:center;margin-top:18px;font-size:var(--text-xl);font-weight:600}
+      .role{text-align:center;color:var(--third);margin-top:6px;font-size:var(--text-md);font-weight:500;}
       .contact{display:block;margin:18px auto 8px auto;padding:10px 14px;border-radius:8px;background:var(--accent);color:var(--bg);font-weight:700;text-align:center;text-decoration: none;}
-      .meta{margin-top:12px;color:var(--accent);font-size:16px;text-align:center}
+      .meta{margin-top:12px;color:var(--accent);font-size:var(--text-base);text-align:center}
       .list{margin-top:18px;border-top:2px solid rgba(43,51,63,1);padding-top:14px;text-align: center;}
-      .list h4{color:var(--accent);margin-bottom:8px;font-size: 24px;}
-      .lang{color:var(--accent);font-size:16px}
+      .list h4{color:var(--accent);margin-bottom:8px;font-size:var(--text-lg);}
+      .lang{color:var(--accent);font-size:var(--text-base)}
 
       /* ---- Main presentation ---- */
-      .panel{background:var(--bg);padding:22px;border-radius:var(--radius);border:2px solid var(--accent); border-radius: 3.375rem;}
-      .hero h1{font-size:3.2rem;margin-bottom:8px; font-weight: 600;border-bottom:2px solid var(--accent)}
-      .hero p{color:var(--accent);font-size:16px}
+      .panel{background:var(--bg);padding:22px;border-radius:var(--radius);border:2px solid var(--accent);}
+      .hero h1{font-size:var(--text-3xl);margin-bottom:25px;font-weight:600;border-bottom:2px solid var(--accent)}
+      .hero p{color:var(--accent);font-size:var(--text-base)}
 
       /* ---- Stack Section ---- */
-      .stack{margin-top:60px; margin-bottom: 15px}
-      .stack .title{font-weight:600;font-size:2.5rem ;margin-bottom:12px;border-bottom:2px solid var(--accent)}
-      .badges{display:flex;flex-wrap:wrap;gap:12px}
-      .badge{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#161b22;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-weight:450; font-size: 1.1rem;}
+      .stack { margin-top: 40px; }
+      .stack .title { font-weight: 600; font-size: var(--text-2xl); margin-bottom: 20px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+      /* Tabs */
+      .sk-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+      .sk-tab { padding: 6px 18px; border-radius: 20px; border: 1.5px solid var(--accent); background: transparent; color: var(--accent); font-size: var(--text-sm); font-family: 'Manrope', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.22s; }
+      .sk-tab.active, .sk-tab:hover { background: var(--accent); color: var(--bg); }
+      body.dark .sk-tab { border-color: rgba(254,253,240,0.35); color: var(--accent); }
+      body.dark .sk-tab.active, body.dark .sk-tab:hover { background: var(--accent); color: var(--bg); }
+
+      /* Layout radar + cards */
+      .sk-body { display: flex; gap: 100px; align-items: center; flex-wrap: wrap; margin-left: 44px; }
+      .sk-radar-wrap { position: relative; flex-shrink: 0; }
+      .sk-radar-tip { position: absolute; background: var(--bg); border: 1.5px solid var(--accent); border-radius: 8px; padding: 6px 12px; font-size: 13px; font-family: 'Manrope', sans-serif; pointer-events: none; opacity: 0; transition: opacity 0.18s; color: var(--accent); white-space: nowrap; z-index: 10; }
+
+      /* Cards grid — auto-fill : 2 cols confortables, 3 si l'espace le permet */
+      .sk-cards { flex: 1; min-width: 220px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; align-content: start; }
+      .sk-card { background: var(--bg); border: 1.5px solid var(--accent); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; }
+      body.dark .sk-card { border-color: rgba(254,253,240,0.2); background: rgba(254,253,240,0.03); }
+      .sk-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+      .sk-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+      .sk-name { font-size: 12px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+      .sk-pct { font-size: 11px; font-weight: 700; white-space: nowrap; }
+      .sk-bar-bg { height: 3px; background: rgba(128,128,128,0.18); border-radius: 2px; overflow: hidden; }
+      .sk-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+      .sk-ctx { font-size: 10.5px; color: var(--muted); margin-top: 5px; line-height: 1.35; }
+      .sk-badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 10px; margin-top: 6px; font-weight: 700; letter-spacing: 0.02em; align-self: flex-start; }
 
       /* ---- Competences / Experiences / Projects ---- */
       .section{margin-top:80px;}
-      .section h3{font-size:3rem;margin-bottom:50px;font-weight: 600;justify-content: center; display: grid;}
+      .section h3{font-size:var(--text-2xl);margin-bottom:50px;font-weight:600;justify-content:center;display:grid;}
       .exp{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));border:1px solid rgba(255,255,255,0.02)}
       .exp .dot{width:46px;height:46px;border-radius:10px;background:#0a0d0f;display:flex;align-items:center;justify-content:center}
       .exp .body{flex:1}
-      .exp .body h4{font-size:15px}
+      .exp .body h4{font-size:var(--text-sm)}
       .exp .body p{color:var(--muted);font-size:14px;margin-top:6px}
       
-      /* ---- SECTION BULLES ---- */
-      .bubbles-section {text-align: center;}
-      .bubbles-grid {display: flex;justify-content: center;gap: 200px;flex-wrap: wrap;}
-      .bubbles-column {display: grid;grid-template-columns: repeat(2, 1fr);gap: 40px;justify-items: center;}
-      .bubbles-column h3 {grid-column: span 2;font-size: 1.5rem;margin-bottom: 20px;color: var(--accent);margin-bottom: -20px;}
-      .bubble {position: relative;width: 80px;height: 80px;border-radius: 50%;display: flex;justify-content: center;align-items: center;cursor: pointer;transition: transform 0.3s ease;}
-      .bubble::before {content: "";position: absolute;inset: 0;border-radius: 50%;filter: blur(25px);z-index: -1;}
-      .bubble .inner {width: 60%;height: 60%;border-radius: 20%;background: inherit;background-blend-mode: multiply;background-color: rgba(0,0,0,0.3);display: flex;justify-content: center;align-items: center;font-size: 1.8rem;color: white;}
-      .bubble p {position: absolute;bottom: -30px;opacity: 0;transform: translateY(0);transition: opacity 0.3s ease, transform 0.3s ease;color: var(--bg)}
-      .bubble.long-text p {bottom: -30px}
-      .bubble:hover {transform: scale(0.9);}
-      .bubble:hover p {opacity: 1;transform: translateY(10px)}
-      .yellow {background: radial-gradient(circle at 30% 30%, #fcd7a8, #fef091);}
-      .blue {background: radial-gradient(circle at 30% 30%, #6fbdff, #85edff);}
-      .pink {background: radial-gradient(circle at 30% 30%, #e250e3, #fc8ec2);}
-      .green {background: radial-gradient(circle at 30% 30%, #6eecd0, #9fe4f4);}
-      .orange {background: radial-gradient(circle at 30% 30%, #ffc7a1, #ff7849);}
-
       /* ---- SECTION CARTES ---- */ 
       .projects-slider {position: relative;overflow: hidden;width: 100%;min-height: 15rem}
       .projects-header {display: flex;align-items: center;justify-content: space-between;width: 100%;max-width: 600px;margin: 0 auto 2rem auto;position: relative}
@@ -147,17 +182,17 @@
       /* Overlay au survol */
       .overlay {position: absolute;inset: 0;background: rgba(0, 0, 0, 0.85);color: white;opacity: 0;display: flex;flex-direction: column;justify-content: center;align-items: center;padding: 20px;text-align: center;transition: opacity 0.3s ease-in-out}
       .card:hover .overlay {opacity: 1;}
-      .overlay h3 {font-size: 20px;margin-bottom: 10px;}
-      .overlay p {font-size: 14px;margin-bottom: 10px;}
+      .overlay h3 {font-size:var(--text-md);margin-bottom: 10px;}
+      .overlay p {font-size: 13.5px;margin-bottom: 10px;}
       .date {font-size: 12px;color: #bbb;}
-      .tech {display: flex;gap: 8px;margin-top: 10px;flex-wrap: wrap;}
+      .tech {display: flex;gap: 8px;margin-top: 5px;flex-wrap: wrap;}
       .tech span {background: rgba(255, 255, 255, 0.2);padding: 4px 8px;border-radius: 8px;font-size: 12px;}
 
       /* ---- SECTION EXPERIENCE ---- */
       .timeline-wrapper {position: relative;width: 99%;max-width: 1000rem;margin: 0 auto;margin-top: 80px;}
       .timeline-line {position: absolute;left: 50%;width: 5px;background: var(--accent);transform: translateX(-50%);transition: height 0.25s ease, top 0.25s ease;z-index: 0}
       .item-header {display: flex;justify-content: space-between;align-items: center;margin-bottom: 10px;}
-      .item-header h4 {font-size: 24px;}
+      .item-header h4 {font-size:var(--text-lg);}
       .timeline-item {position: relative;width: 45%;padding: 25px 15px;background: var(--bg);border-radius: 15px;box-shadow: 0 0 8px var(--accent);transition: all 0.6s ease-out;margin: 70px 0;z-index: 1}
       .date-badge {background: var(--accent);color: var(--bg);padding: 4px 10px;border-radius: 12px;font-size: 0.8rem;font-weight: 600;white-space: nowrap}
       .timeline-item:nth-child(odd) {left: 0;}
@@ -165,22 +200,26 @@
 
       /* ---- SECTION CONTACT ---- */
       #contact.section{display: grid; justify-content: center;}
+      .contact-container {display: flex;flex-direction: column;align-items: center;gap: 15px;max-width: 650px;margin: 0 auto;width: 100%;}
+
       /* Form */
       .contact-form {display: grid;width: 100%;}
-      .contact-form input, .contact-form textarea { background: transparent;border: 3px solid var(--accent);padding: 10px; margin-bottom: 15px;color: var(--accent);outline: none;border-radius: 10px}
+      .contact-form input, .contact-form textarea { background: transparent;border: 3px solid var(--accent);padding: 10px; margin-bottom: 15px;color: var(--accent);outline: none;border-radius: 10px;font-family: 'Manrope', sans-serif;font-size: var(--text-base);font-style: normal;}
       .contact-form textarea {resize: none;height: 120px;}
-      .contact-form button {background: #2c80d3;border: none;color: #fff;padding: 2px; border-radius: 4px; cursor: pointer; transition: background 0.3s; display: flex; justify-content: center}
-      .contact-form button:hover {background: #1f5f9d;}
-      .contact-form .send-icon {width: 30px; height: 30px;}
+      .contact-form input::placeholder,
+      .contact-form textarea::placeholder {font-family: 'Manrope', sans-serif; font-style: normal; font-size: var(--text-base); color: var(--muted); opacity: 1; }
+      .contact-form button {background: var(--accent); border: none; color: var(--bg); padding: 12px 28px; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Manrope', sans-serif; font-size: var(--text-base); font-weight: 600; width: 100%; }
+      .contact-form button:hover {opacity: 0.85;}
+      .contact-form .send-icon {width: 20px; height: 20px; filter: brightness(0) invert(1);}
 
       /* Info section */
-      .contact-info {display: flex;gap: 20px;justify-content: center;}
+      .contact-info {display: flex;justify-content: center;align-items: center;flex-wrap: wrap;width: 100%;margin-bottom: 32px;gap: 28px;}
       .row {display: flex;gap: 10px;}
       .row input {flex: 1;}
-      .info-item {display: flex;align-items: center;gap: 12px;font-size: 15px;color: var(--accent);}
-      .info-item i {font-size: 18px;color: #9ca3af;width: 20px;text-align: center;}
-      .info-item img {width: 30px; height: 30px;object-fit: contain;filter: grayscale(100%);}
-      .info-item span {font-size: 20px; font-weight: 10rem;}
+      .info-item {display: flex;align-items: center;gap: 8px;font-size: var(--text-sm);color: var(--accent);}
+      .info-item i {font-size: var(--text-md);color: #9ca3af;width: 20px;text-align: center;}
+      .info-item img {width: 20px;height: 20px;object-fit: contain;filter: grayscale(100%);flex-shrink: 0;}
+      .info-item span {font-size:var(--text-base);font-weight:600;white-space: nowrap;}
 
       /* ========================= */
       /*   RESPONSIVE OPTIMISATION */
@@ -189,38 +228,71 @@
       @media (max-width: 1024px) {
         .container {grid-template-columns: 1fr;gap: 20px;padding: 0 12px}
         .projects {grid-template-columns: repeat(2, 1fr);gap: 20px}
-        .bubbles-grid {gap: 80px}
         .contact-container {margin-left: 0;gap: 20px;flex-wrap: wrap}
       }
       @media (max-width: 768px) {
-        .hero h1 {font-size: 2.4rem}
-        .section h3 {font-size: 2.2rem;margin-bottom: 30px}
-        .name {font-size: 26px}
-        .role {font-size: 18px}
+        .hero h1 {font-size: var(--text-xl)}
+        .section h3 {font-size: var(--text-lg);margin-bottom: 30px}
+        .name {font-size: var(--text-lg)}
+        .role {font-size: var(--text-base)}
         .projects {grid-template-columns: 1fr;gap: 16px}
         .projects .card {width: 100%;height: auto}
         .projects .card img {width: 100%;height: auto}
-        .bubbles-grid {gap: 40px}
-        .bubbles-column {grid-template-columns: 1fr;gap: 20px}
         .timeline-item {width: 100%;left: 0 !important;margin-left: 0;}
         .timeline-line {left: 20px}
         .contact-container {display: flex;flex-direction: column;margin-left: 0;gap: 20px}
         .contact-form {width: 100%}
       }
       @media (max-width: 480px) {
-        .hero h1 {font-size: 2rem}
-        .section h3 {font-size: 1.8rem}
-        .name {font-size: 22px}
-        .role {font-size: 16px}
-        .stack .title {font-size: 1.8rem}
+        .hero h1 {font-size: var(--text-lg)}
+        .section h3 {font-size: var(--text-md)}
+        .name {font-size: var(--text-md)}
+        .role {font-size: var(--text-sm)}
+        .stack .title {font-size: var(--text-lg)}
         .container {padding: 0 8px;gap: 16px}
       }
 
+      /* ---- Scroll Progress Bar ---- */
+      #scroll-progress {position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, #ff8a73); z-index: 10001; border-radius: 0 2px 2px 0; pointer-events: none; transition: width 0.08s linear; }
+
+      /* ---- Sticky Header with Frosted Glass ---- */
+      header {position: sticky; top: 0; z-index: 500; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(254, 253, 240, 0.85); transition: background 0.9s ease; }
+      body.dark header {background: rgba(14, 17, 23, 0.85); }
+      main > section {position: relative; z-index: 1; isolation: isolate; }
+
+      /* ---- Profile Pic Pulsing Glow ---- */
+      @keyframes glowPulseLight {
+        0%, 100% { box-shadow: 0 0 12px 4px rgba(111, 189, 255, 0.4), 0 0 0 5px var(--accent); }
+        50%       { box-shadow: 0 0 28px 12px rgba(111, 189, 255, 0.75), 0 0 0 5px var(--accent); }
+      }
+      @keyframes glowPulseDark {
+        0%, 100% { box-shadow: 0 0 12px 4px rgba(255, 138, 115, 0.4), 0 0 0 5px var(--accent); }
+        50%       { box-shadow: 0 0 28px 12px rgba(255, 138, 115, 0.75), 0 0 0 5px var(--accent); }
+      }
+      .profile-pic {animation: glowPulseLight 2.5s ease-in-out infinite; }
+      body.dark .profile-pic {animation: glowPulseDark 2.5s ease-in-out infinite; }
+
+      /* ---- Nav Links Animated Underline ---- */
+      .nav a {position: relative; }
+      .nav a::after {content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: var(--third); border-radius: 1px; transition: width 0.3s ease; }
+      .nav a:hover::after {width: 100%; }
+
+
     </style>
   </head>
-          <button id="scrollToTop" class="scroll-top-btn" aria-label="Retour en haut">↑</button>
   <body>
-    <div id="loader"><div class="center-portal"></div></div>
+    <div id="scroll-progress"></div>
+    <button id="scrollToTop" class="scroll-top-btn" aria-label="Retour en haut">↑</button>
+    <div id="loader">
+      <div class="loader-ring">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle class="loader-ring-track" cx="60" cy="60" r="54"/>
+          <circle class="loader-ring-fill"  cx="60" cy="60" r="54"/>
+        </svg>
+        <div class="loader-initials">A<span>D</span></div>
+      </div>
+    </div>
+
     <!-- Header -->
     <header>
       <div class="header-inner fade-in-up">
@@ -233,7 +305,7 @@
             <a href="#contact">Contact</a>
           </nav>
         </div>
-        <button class="cv-button" id="cvBtn"><span>CV</span></button>
+        <button class="cv-button" id="cvBtn"><span>Voir mon CV</span></button>
         <div class="theme-toggle">
           <input type="checkbox" id="switch" />
           <label for="switch" class="slider"></label>
@@ -244,8 +316,11 @@
     <!-- Modal -->
     <div class="modal" id="cvModal">
       <div class="modal-content">
-        <button class="close-btn" id="closeModal">X</button>
-        <img src="assets/CV.png" alt="CV" class="cv-image">
+        <div class="modal-toolbar">
+          <a href="assets/CV2.pdf" download="CV_Andy_Dourel.pdf" class="modal-download-btn">↓ Télécharger</a>
+          <button class="close-btn" id="closeModal" aria-label="Fermer">✕</button>
+        </div>
+        <iframe src="assets/CV2.pdf" class="cv-frame" title="CV Andy Dourel"></iframe>
       </div>
     </div>
 
@@ -255,7 +330,7 @@
       <aside>
         <div class="card fade-in-up">
           <div class="profile-pic" id="profilePic">
-            <img src="assets/portrait.png" alt="photo">
+            <img src="assets/portrait.png" alt="Photo de profil d'Andy Dourel">
           </div>
           <div class="name">Andy Dourel</div>
           <div class="role">Ingénieur Cybersécurité</div>
@@ -263,68 +338,40 @@
           <div class="meta">24 ans · Blagnac, 31700<br><img src="assets/teleport.gif" alt="gif animé" style="width:20px; vertical-align:middle;"><span style="color:#19c615; font-weight:600;">Recherche d'emploi</span><br>🎓 CESI Labège<br>🚗 Véhiculé</div>
           <div class="list">
             <h4>Langues</h4>
-            <div class="lang">🇬🇧 Anglais B2 (TOEIC 860)<br>🇵🇹 Portugais A2</div>
+            <div class="lang">🇬🇧 Anglais B2 (TOEIC 860)<br>🇪🇸 Espagnol · Notions</div>
           </div>
         </div>
       </aside>
 
       <!-- MAIN CONTENT -->
       <section>
-        <div class="panel hero fade-in-up">
+        <div id="presentation" class="panel hero fade-in-up">
           <small>Dourel Andy / portfolio.md</small>
-          <h1>BIENVENUE SUR <span style="color:var(--third)">MON PORTFOLIO</span></h1>
-          <p>
-            Diplômé de <span style="color:var(--third)">l'école d'ingénieur du CESI</span> en développement d'application, recherchant actuellement un emploi en tant qu'<span style="color:var(--third)">ingénieur cybersécurité</span>.
-            Passionné par la thématique des vulnérabilités depuis mon Projet de Fin d'Etude, j'ai décidé de me spécialiser dans ce domaine. Cela m'a permis
-            de développer mes compétences en <span style="color:var(--third)">gestion des vulnérabilités</span>. Outre la cybersécurité, j'accorde une
-            grande importance au <span style="color:var(--third)">développement</span>, car je crois qu'il est possible de pouvoir appliquer mes connaissances en programmation au domaine de la sécurité informatique.
-          </p>
+          <h1>Andy Dourel — <span style="color:var(--third)">Ingénieur Cybersécurité</span></h1>
+         <p>
+            Spécialisé en <span style="color:var(--third)">gestion des vulnérabilités</span>, je dispose d'une expérience opérationnelle acquise en stage puis en poste, où j'ai eu l'occasion de <span style="color:var(--third)">construire et piloter des fonctions cyber de A à Z</span> — de la mise en place des outils à la remédiation des vulnérabilités identifiées.</br>
+            </br>Ma spécialisation s'est forgée autour de la gestion des vulnérabilités et de l'analyse de la surface d'attaque externe (<span style="color:var(--third)">EASM</span>), domaines dans lesquels j'interviens au quotidien avec des outils comme Greenbone.</br>
+            </br>En parallèle, mes compétences en développement (Python, PowerShell, R) me permettent d'aller plus loin : j'ai notamment développé mon propre <span style="color:var(--third)">outil d'EASM</span>, à l'intersection entre sécurité et programmation.
+         </p>
           <div class="stack">
             <div class="title">STACK</div>
-            <section class="bubbles-section">
-              <div class="bubbles-grid">
-                <!-- BACKEND & TOOLS -->
-                <div class="bubbles-column fade-in-up">
-                  <h3>CYBERSÉCURITÉ</h3>
-                  <div class="bubble pink long-text">
-                    <div class="inner"><img src="assets/vulnerability-management.png" alt="Gestion des vulnérabilités" style="width:36px;height:36px"></div>
-                    <p class="date-badge">Gestion des vulnérabilités</p>
-                  </div>
-                  <div class="bubble blue long-text">
-                    <div class="inner"><img src="assets/patch_management.png" alt="Patch management" style="width:40px;height:40px"></div>
-                    <p class="date-badge">Patch management</p>
-                  </div>
-                  <div class="bubble green">
-                    <div class="inner"><img src="assets/Anssi.png" alt="ANSSI" style="width:40px;height:40px"></div>
-                    <p class="date-badge">ANSSI</p>
-                  </div>
-                  <div class="bubble orange">
-                    <div class="inner"><img src="assets/ISO27001.png" alt="ISO 27001" style="width:40px;height:40px"></div>
-                    <p class="date-badge">ISO 27001</p>
-                  </div>
-                </div>
-                <!-- FRONTEND -->
-                <div class="bubbles-column fade-in-up">
-                  <h3>DÉVELOPPEMENT</h3>
-                  <div class="bubble yellow">
-                    <div class="inner"><img src="assets/python.png" alt="Python" style="width:36px;height:36px"></div>
-                    <p class="date-badge">Python</p>
-                  </div>
-                  <div class="bubble blue">
-                    <div class="inner"><img src="assets/C++.png" alt="C++" style="width:34px;height:37px"></div>
-                    <p class="date-badge">C++</p>
-                  </div>
-                  <div class="bubble green">
-                    <div class="inner"><img src="assets/java.png" alt="Java" style="width:40px;height:40px"></div>
-                    <p class="date-badge">Java</p>
-                  </div>
-                  <div class="bubble pink">
-                    <div class="inner"><img src="assets/js.png" alt="Javascript" style="width:40px;height:40px"></div>
-                    <p class="date-badge">Javascript</p>
-                  </div>
-                </div>
+            <!-- Tabs -->
+            <div class="sk-tabs" id="skTabs">
+              <button class="sk-tab active" data-cat="cyber">Cybersécurité</button>
+              <button class="sk-tab" data-cat="outils">Outils SOC</button>
+              <button class="sk-tab" data-cat="scripting">Scripting</button>
+            </div>
+
+            <!-- Body : radar gauche + cards droite -->
+            <div class="sk-body">
+              <!-- Radar -->
+              <div class="sk-radar-wrap">
+                <canvas id="skRadar" width="300" height="280"></canvas>
+                <div class="sk-radar-tip" id="skTip"></div>
               </div>
-            </section>
+              <!-- Cards -->
+              <div class="sk-cards" id="skCards"></div>
+            </div>
           </div>
         </div>
 
@@ -343,7 +390,7 @@
               <div class="card"> <img src="assets/CesiEAT.PNG" alt="CesiEAT"> 
                 <div class="overlay"> 
                   <h3>CesiEAT</h3> 
-                  <p>Création d'une application similaire à UberEAT®.</p> 
+                  <p>Recréation d'une application de livraison type UberEats avec trois interfaces distinctes — utilisateur, livreur et restaurant.</p> 
                   <p class="date">2023</p> 
                   <div class="tech"> 
                     <span>Java</span>
@@ -356,7 +403,7 @@
                 <img src="assets/CESIGame.PNG" alt="CESI Game"> 
                 <div class="overlay"> 
                   <h3>CESI Game</h3> 
-                  <p>Jeu de plateforme avec obstacles à plusieurs joueurs.</p> 
+                  <p>Jeu de plateforme multijoueur dans l'esprit de Fall Guys, avec un éditeur de niveaux intégré en réalité virtuelle.</p> 
                   <p class="date">2024</p> 
                   <div class="tech"> 
                     <span>C++</span>
@@ -369,7 +416,7 @@
                 <img src="assets/usine30.PNG" alt="Usine 3.0"> 
                 <div class="overlay"> 
                   <h3>Usine 3.0</h3> 
-                  <p>Simulation de gestion de projet pour la mise en oeuvre d'une usine à l'international.</p> 
+                  <p>Simulation complète de gestion de projet — planification, gestion des imprévus, délais et coûts.</p> 
                   <p class="date">2024</p> 
                   <div class="tech"> 
                     <span>AMDEC</span>
@@ -386,7 +433,7 @@
                 <img src="assets/kilometrepro.png" alt="KilometrePro"> 
                 <div class="overlay"> 
                   <h3>KilometrePro</h3> 
-                  <p>Application pour le suivi des frais kilométriques.</p> 
+                  <p>Application mobile de suivi des trajets professionnels avec export pour remboursement kilométrique et dashboard d'historique.</p> 
                   <p class="date">En cours</p> <div class="tech"> 
                     <span>Dart</span>
                     <span>Flutter</span>
@@ -395,15 +442,15 @@
                 </div> 
               </div> 
               <div class="card"> 
-                <img src="assets/1001games.png" alt="1001 Jeux"> 
+                <img src="assets/cybersentry.png" alt="CyberSentry"> 
                 <div class="overlay"> 
-                  <h3>1001 jeux</h3> 
-                  <p>Jeu vidéo permettant de jouer à plusieurs mini jeux.</p> 
+                  <h3>CyberSentry</h3> 
+                  <p>Outil d'EASM pour cartographier la surface d'attaque externe : domaines, sous-domaines, services exposés, configuration TLS, technologies détectées et CVE.</p> 
                   <p class="date">En cours</p> 
                   <div class="tech"> 
-                    <span>C++</span>
-                    <span>Unity</span>
-                    <span>Blender</span> 
+                    <span>React</span>
+                    <span>Vite</span>
+                    <span>SQL</span> 
                   </div> 
                 </div> 
               </div> 
@@ -411,7 +458,7 @@
                 <img src="assets/VocalEase.png" alt="VocalEase"> 
                 <div class="overlay"> 
                   <h3>VocalEase</h3> 
-                  <p>Utilisation d'un ordinateur par la voix uniquement.</p> 
+                  <p>Contrôle vocal d'un ordinateur — navigation web, lancement d'applications et gestion du système (volume, etc.) sans souris ni clavier.</p> 
                   <p class="date">Juin 2025</p> 
                   <div class="tech">
                     <span>Python</span>
@@ -427,37 +474,14 @@
         <div id="experiences" class="section timeline-wrapper">
           <h3 class="section-title">EXPÉRIENCES</h3>
           <div class="timeline-line"></div>
-          <div class="timeline-item fade-in-right"> 
-            <div class="content">
-              <div class="item-header">
-                <h4>Stage de 2ᵉᵐᵉ année : CESI 🏫</h4>
-                <span class="date-badge">3 mois</span>
-              </div>
-              <p>Fabrication d'une mini imprimante permettant d'écrire un message depuis un fichier.</p>
-              <span></span>
-              <p style="color:var(--third)">- Langages de programmation : C++</p>
-            </div>
-          </div>
-          <div class="timeline-item fade-in-left">
-            <div class="content">
-              <div class="item-header">
-                <h4>Stage de 3ᵉᵐᵉ année : Capgemini 🏦</h4>
-                <span class="date-badge">5 mois</span>
-              </div>
-              <p>Réalisation d'un programme de détection de forme "clé" permettant la superposition de modèle 3d à l'aide de la réalité augmentée.</p>
-              <span></span>
-              <p style="color:var(--third)">- Langages de programmation : Python</p>
-              <p style="color:var(--third)">- Framework : OpenCV</p>
-            </div>
-          </div>
           <div class="timeline-item fade-in-right">
             <div class="content">
               <div class="item-header">
-                <h4>Stage de 4ᵉᵐᵉ année : Université d'Aalborg (Danemark) ✈</h4>
+                <h4>Stage 4ᵉ année — Aalborg University, Danemark</h4>
                 <span class="date-badge">6 mois</span>
               </div>
-              <p>Création d'un agent conversationnel capable de lire et mener une réflexion sur les données présentes au sein d'une dashboard connectée.</p>
-              <span></span>
+              <p>Développement d'un agent conversationnel capable d'interroger et d'analyser les données d'une dashboard connectée en temps réel.</p>
+              </br>
               <p style="color:var(--third)">- Langages de programmation : Python, R</p>
               <p style="color:var(--third)">- Frameworks : RASA, Shiny</p>
             </div>
@@ -465,14 +489,28 @@
           <div class="timeline-item fade-in-left">
             <div class="content">
               <div class="item-header">
-                <h4>Stage de 5ᵉᵐᵉ année : Collecte Localisation Satellite (CLS) 🪐</h4>
+                <h4>Stage 5ᵉ année — CLS, Toulouse</h4>
                 <span class="date-badge">6 mois</span>
               </div>
-              <p>Amélioration de l'efficacité de la gestion des vulnérabilités mise en place.</p>
-              <span></span>
-              <p style="color:var(--third)">- Intégration d'outils : Cortex, Cyberwatch, Outpost24, Greenbone.</p> 
-              <p style="color:var(--third)">- Résolution de ticket : Phishing, Ouverture de flux, Comissioning</p>
-              <p style="color:var(--third)">- Gestion de projet : GANTT, RACI, PERT, Coût, Temps.</p>
+              <p>Mise en place d'un cadre complet de gestion des vulnérabilités dans un contexte spatial et critique — politique, processus, outillage et remédiation.</p>
+              </br>
+              <p style="color:var(--third)">- Outils : Greenbone, Cyberwatch, Outpost24, Cortex</p> 
+              <p style="color:var(--third)">- Incidents : phishing, ouverture de flux</p>
+              <p style="color:var(--third)">- Gestion de projet : GANTT, RACI, PERT</p>
+            </div>
+          </div>
+          <div class="timeline-item fade-in-right">
+            <div class="content">
+              <div class="item-header">
+                <h4>Ingénieur Cybersécurité — DS Étanchéité</h4>
+                <span class="date-badge">Avr.2025 - Aujourd'hui</span>
+              </div>
+              <p>Structuration et déploiement de la fonction cybersécurité d'une PME du secteur BTP — gouvernance, politique de sécurité, choix et intégration des outils, en autonomie complète.</p>
+            </br>
+              <p style="color:var(--third)">- Outils : Greenbone, EASM</p>
+              <p style="color:var(--third)">- Gestion des vulnérabilités : analyse, priorisation, remédiation</p>
+              <p style="color:var(--third)">- Sensibilisation et accompagnement des collaborateurs</p>
+              <p style="color:var(--third)">- Détection et traitement des incidents phishing</p>
             </div>
           </div>
         </div>
@@ -489,27 +527,207 @@
               </div>
               <input type="email" name="fi-sender-email" placeholder="Adresse mail" required>
               <textarea name="fi-text-message" placeholder="Message" required></textarea>
-              <button type="submit"><img src="assets/send.png" alt="Envoyer" class="send-icon"></button>
+              <button type="submit"><img src="assets/send.png" alt="" class="send-icon"> Envoyer</button>
             </form>
             <p id="form-status" style="text-align:center;margin-top:10px;font-weight:600;"></p>
 
             <!-- Info -->
             <div class="contact-info">
               <div class="info-item">
-                <img src="assets/localisation.png" alt="location icon">
+                <img src="assets/localisation.png" alt="Localisation">
                 <span>Blagnac, Occitanie</span>
               </div>
               <div class="info-item">
-                <img src="assets/phone.png" alt="phone icon">
-                <span>(+33) 6 51 83 12 79</span>
+                <img src="assets/phone.png" alt="Téléphone">
+                <span id="phone-display" data-n="336518312" data-s="79" aria-label="Numéro de téléphone"></span>
               </div>
               <div class="info-item">
-                <img src="assets/mail.png" alt="mail icon">
+                <img src="assets/mail.png" alt="Email">
                 <span>dourelandy@gmail.com</span>
               </div>
             </div>
           </div>
         </div>
+        <!-- ===== STACK ENGINE ===== -->
+        <script>
+        (function () {
+          /* ---------- DATA ---------- */
+          const CATS = {
+            cyber: {
+              accent: '#534AB7', fill: 'rgba(83,74,183,0.15)',
+              skills: [
+                { label: 'Vuln. Management', val: 90, ctx: 'Cadre complet déployé — politique, processus, outils', badge: 'Expert', bi: '#E1F5EE', bc: '#0F6E56', icon: '🛡️' },
+                { label: 'EASM', val: 80, ctx: 'Cartographie surface d\'attaque externe', badge: 'Avancé', bi: '#E1F5EE', bc: '#0F6E56', icon: '🌐' },
+                { label: 'ISO 27001 / NIST', val: 72, ctx: 'Application en contexte PFE', badge: 'Avancé', bi: '#E1F5EE', bc: '#0F6E56', icon: '📋' },
+                { label: 'Phishing Analysis', val: 68, ctx: 'Analyse statique, sandboxing', badge: 'Intermédiaire', bi: '#EEEDFE', bc: '#3C3489', icon: '🦠' },
+                { label: 'Incident Response', val: 65, ctx: 'Investigations niveau 1-2', badge: 'Intermédiaire', bi: '#EEEDFE', bc: '3C3489', icon: '🚨' },
+                { label: 'Threat Hunting', val: 55, ctx: 'Chasse proactive via Cortex XDR', badge: 'Notion', bi: '#FFF3E0', bc: '#7B3F00', icon: '🔍' },
+              ]
+            },
+            outils: {
+              accent: '#1D9E75', fill: 'rgba(29,158,117,0.15)',
+              skills: [
+                { label: 'Cyberwatch', val: 85, ctx: 'Test benchmark et déploiement en prod', badge: 'Expert', bi: '#E1F5EE', bc: '#0F6E56', icon: '✅' },
+                { label: 'Greenbone', val: 85, ctx: 'Intégration & configuration', badge: 'Avancé', bi: '#E1F5EE', bc: '#0F6E56', icon: '🐛' },
+                { label: 'Outpost24', val: 75, ctx: 'EASM & surface d\'attaque', badge: 'Avancé', bi: '#E1F5EE', bc: '#0F6E56', icon: '📡' },
+                { label: 'Cortex XDR', val: 70, ctx: 'Threat Hunting, Incident Response', badge: 'Intermédiaire', bi: '#EEEDFE', bc: '#3C3489', icon: '⚡' },
+                { label: 'Cortex XSOAR', val: 65, ctx: 'Automatisation réponse incidents', badge: 'Intermédiaire', bi: '#EEEDFE', bc: '#3C3489', icon: '🤖' },
+                { label: 'Splunk', val: 60, ctx: 'SIEM, analyse de logs', badge: 'Notions', bi: '#FFF3E0', bc: '#7B3F00', icon: '📊' },
+              ]
+            },
+            scripting: {
+              accent: '#BA7517', fill: 'rgba(186,117,23,0.15)',
+              skills: [
+                { label: 'Python', val: 85, ctx: 'Scripts sécu, automatisation', badge: 'Expert', bi: '#E1F5EE', bc: '#0F6E56', icon: '🐍' },
+                { label: 'PowerShell', val: 72, ctx: 'Automatisation Windows, AD', badge: 'Avancé', bi: '#E1F5EE', bc: '#0F6E56', icon: '💻' },
+                { label: 'R', val: 60, ctx: 'Data viz, stage Aalborg (Danemark)', badge: 'Intermédiaire', bi: '#FFF3E0', bc: '#7B3F00', icon: '📈' },
+              ]
+            }
+          };
+
+          let activeCat = 'cyber';
+          const canvas = document.getElementById('skRadar');
+          const ctx2d = canvas.getContext('2d');
+          const tip = document.getElementById('skTip');
+          const cardsEl = document.getElementById('skCards');
+
+          /* ---------- DRAW RADAR ---------- */
+          function drawRadar(cat) {
+            const d = CATS[cat];
+            const n = d.skills.length;
+            const W = canvas.width, H = canvas.height;
+            const cx = W / 2, cy = H / 2 + 5;
+            const R = Math.min(W, H) * 0.37, r0 = 14;
+            ctx2d.clearRect(0, 0, W, H);
+
+            const isDark = document.body.classList.contains('dark');
+            const gridCol = isDark ? 'rgba(254,253,240,0.1)' : 'rgba(0,0,0,0.08)';
+            const labelCol = isDark ? 'rgba(254,253,240,0.5)' : 'rgba(0,0,0,0.42)';
+
+            /* rings */
+            for (let ring = 1; ring <= 4; ring++) {
+              ctx2d.beginPath();
+              for (let i = 0; i <= n; i++) {
+                const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+                const rr = r0 + (R - r0) * (ring / 4);
+                i === 0 ? ctx2d.moveTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr)
+                        : ctx2d.lineTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr);
+              }
+              ctx2d.closePath();
+              ctx2d.strokeStyle = gridCol; ctx2d.lineWidth = 1; ctx2d.stroke();
+            }
+
+            /* axes + labels */
+            d.skills.forEach((s, i) => {
+              const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+              ctx2d.beginPath();
+              ctx2d.moveTo(cx + Math.cos(a)*r0, cy + Math.sin(a)*r0);
+              ctx2d.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);
+              ctx2d.strokeStyle = gridCol; ctx2d.lineWidth = 1; ctx2d.stroke();
+              /* label */
+              const lx = cx + Math.cos(a)*(R + 16);
+              const ly = cy + Math.sin(a)*(R + 16);
+              ctx2d.fillStyle = labelCol;
+              ctx2d.font = '10px Manrope, system-ui, sans-serif';
+              ctx2d.textAlign = 'center'; ctx2d.textBaseline = 'middle';
+              ctx2d.fillText(s.label, lx, ly);
+            });
+
+            /* shape */
+            ctx2d.beginPath();
+            d.skills.forEach((s, i) => {
+              const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+              const rr = r0 + (R - r0) * (s.val / 100);
+              i === 0 ? ctx2d.moveTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr)
+                      : ctx2d.lineTo(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr);
+            });
+            ctx2d.closePath();
+            ctx2d.fillStyle = d.fill; ctx2d.fill();
+            ctx2d.strokeStyle = d.accent; ctx2d.lineWidth = 2; ctx2d.stroke();
+
+            /* dots */
+            d.skills.forEach((s, i) => {
+              const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+              const rr = r0 + (R - r0) * (s.val / 100);
+              ctx2d.beginPath();
+              ctx2d.arc(cx + Math.cos(a)*rr, cy + Math.sin(a)*rr, 4, 0, 2*Math.PI);
+              ctx2d.fillStyle = d.accent; ctx2d.fill();
+            });
+          }
+
+          /* ---------- RENDER CARDS ---------- */
+          function renderCards(cat) {
+            const d = CATS[cat];
+            cardsEl.innerHTML = '';
+            d.skills.forEach(s => {
+              const card = document.createElement('div');
+              card.className = 'sk-card';
+              card.innerHTML = `
+                <div class="sk-card-head">
+                  <div class="sk-icon" style="background:${s.bi}">${s.icon}</div>
+                  <span class="sk-name">${s.label}</span>
+                  <span class="sk-pct" style="color:${d.accent}">${s.val}%</span>
+                </div>
+                <div class="sk-bar-bg"><div class="sk-bar-fill" style="width:0%;background:${d.accent}" data-val="${s.val}"></div></div>
+                <div class="sk-ctx">${s.ctx}</div>
+                <span class="sk-badge" style="background:${s.bi};color:${s.bc}">${s.badge}</span>
+              `;
+              cardsEl.appendChild(card);
+            });
+            /* animate bars on next frame */
+            requestAnimationFrame(() => {
+              cardsEl.querySelectorAll('.sk-bar-fill').forEach(el => {
+                el.style.width = el.dataset.val + '%';
+              });
+            });
+          }
+
+          /* ---------- TOOLTIP ---------- */
+          canvas.addEventListener('mousemove', e => {
+            const d = CATS[activeCat];
+            const n = d.skills.length;
+            const rect = canvas.getBoundingClientRect();
+            const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const my = (e.clientY - rect.top) * (canvas.height / rect.height);
+            const cx = canvas.width/2, cy = canvas.height/2 + 5;
+            const R = Math.min(canvas.width, canvas.height)*0.37, r0 = 14;
+            let hit = null;
+            d.skills.forEach((s, i) => {
+              const a = (i/n)*2*Math.PI - Math.PI/2;
+              const rr = r0 + (R-r0)*(s.val/100);
+              if (Math.hypot(mx - (cx+Math.cos(a)*rr), my - (cy+Math.sin(a)*rr)) < 10) hit = s;
+            });
+            if (hit) {
+              tip.style.opacity = '1';
+              tip.style.left = (e.clientX - rect.left + 12) + 'px';
+              tip.style.top  = (e.clientY - rect.top  - 12) + 'px';
+              tip.textContent = `${hit.label} — ${hit.val}/100`;
+            } else { tip.style.opacity = '0'; }
+          });
+          canvas.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+
+          /* ---------- TABS ---------- */
+          document.getElementById('skTabs').addEventListener('click', e => {
+            const btn = e.target.closest('.sk-tab');
+            if (!btn) return;
+            document.querySelectorAll('.sk-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCat = btn.dataset.cat;
+            drawRadar(activeCat);
+            renderCards(activeCat);
+          });
+
+          /* ---------- DARK MODE OBSERVER ---------- */
+          const obs = new MutationObserver(() => drawRadar(activeCat));
+          obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+          /* ---------- INIT ---------- */
+          drawRadar(activeCat);
+          renderCards(activeCat);
+        })();
+        </script>
+        <!-- ===== END STACK ENGINE ===== -->
+
         <script src="script.js"></script>
         <script src="https://forminit.com/sdk/v1/forminit.js"></script>
         <script>
@@ -519,8 +737,6 @@
             const statusEl = document.getElementById('form-status');
             statusEl.textContent = 'Envoi en cours...';
             const { data, error } = await forminit.submit('de3b1a032ew', new FormData(e.target));
-            console.log('data:', data);
-            console.log('error:', error);
             if (error) {
               statusEl.style.color = 'red';
               statusEl.textContent = error.message;
@@ -532,7 +748,48 @@
             e.target.reset();
           });
         </script>
+        <script>
+          // ---- Scroll Progress Bar ----
+          const progressBar = document.getElementById('scroll-progress');
+          window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+          });
+
+
+        </script>
+        <script>
+          // ---- CV Modal ----
+          const cvModal = document.getElementById('cvModal');
+          // Fermeture au clic sur le fond (hors contenu)
+          cvModal.addEventListener('click', (e) => {
+            if (e.target === cvModal) cvModal.style.display = 'none';
+          });
+          // Fermeture à la touche Échap
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && cvModal.style.display !== 'none') {
+              cvModal.style.display = 'none';
+            }
+          });
+        </script>
       </section>
     </main>
+    <script>
+      // Obfuscation numéro de téléphone
+      (function () {
+        const el = document.getElementById('phone-display');
+        if (!el) return;
+        const { n, s } = el.dataset;
+        const digits = n + s;
+        const num = `+${digits.slice(0,2)} ${digits[2]} ${digits.slice(3,5)} ${digits.slice(5,7)} ${digits.slice(7,9)} ${digits.slice(9,11)}`;
+        el.textContent = num;
+        el.closest('a') || el.parentElement.addEventListener('click', () => {
+          window.location.href = `tel:+${digits}`;
+        });
+        el.parentElement.style.cursor = 'pointer';
+        el.setAttribute('aria-label', `Téléphone : ${num}`);
+      })();
+    </script>
   </body>
 </html>

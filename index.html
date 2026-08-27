@@ -281,6 +281,7 @@
         --mono: 'DM Mono', monospace;
         --max-width: 1380px;
         --radius: 0;
+        --sidebar-text: 11px;
       }
 
       * { border-radius: 0 !important; }
@@ -331,14 +332,14 @@
       .profile-pic img { filter: grayscale(100%) contrast(1.08); mix-blend-mode: normal; object-position: center 84%; }
       body.dark .profile-pic img { filter: grayscale(100%) contrast(1.08); mix-blend-mode: normal; }
       .name { text-align: center; margin-top: 24px; font-size: 29px; line-height: 0.95; letter-spacing: -0.07em; font-weight: 700; }
-      .role { text-align: center; color: var(--signal); margin-top: 12px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.5; }
-      .contact { display: block; width: fit-content; max-width: 100%; margin: 24px auto 0; padding: 13px 12px; background: var(--accent); color: var(--bg); font-family: var(--mono); font-size: 10px; letter-spacing: 0.02em; overflow-wrap: anywhere; }
+      .role { text-align: center; color: var(--signal); margin-top: 12px; font-family: var(--mono); font-size: var(--sidebar-text); text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.5; }
+      .contact { display: block; width: fit-content; max-width: 100%; margin: 24px auto 0; padding: 13px 12px; background: var(--accent); color: var(--bg); font-family: var(--mono); font-size: var(--sidebar-text); letter-spacing: 0.02em; overflow-wrap: anywhere; }
       .contact:hover { background: var(--signal); color: var(--accent); }
-      .meta { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--ink-soft); text-align: center; font-family: var(--mono); font-size: 10px; line-height: 2; }
+      .meta { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--ink-soft); text-align: center; font-family: var(--mono); font-size: var(--sidebar-text); line-height: 2; }
       .meta img { filter: none; }
       .list { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); text-align: center; }
-      .list h4 { margin-bottom: 8px; color: var(--signal); font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
-      .lang { color: var(--ink-soft); font-family: var(--mono); font-size: 10px; line-height: 1.8; }
+      .list h4 { margin-bottom: 8px; color: var(--signal); font-family: var(--mono); font-size: var(--sidebar-text); text-transform: uppercase; letter-spacing: 0.1em; }
+      .lang { color: var(--ink-soft); font-family: var(--mono); font-size: var(--sidebar-text); line-height: 1.8; }
 
       main > section { min-width: 0; }
       .panel { padding: 0; background: transparent; border: 0; }

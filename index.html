@@ -407,6 +407,8 @@
       #contact h3::before { content: '04 /'; }
       .contact-container { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr); gap: 50px; max-width: none; align-items: start; }
       .contact-form { gap: 0; }
+      /* Footer contact items: force readable size */
+      #contact .info-item, #contact .info-item span { font-size: 11px; }
       .contact-form input, .contact-form textarea { margin-bottom: 14px; padding: 15px 0; border: 0; border-bottom: 1px solid var(--accent); border-radius: 0; color: var(--accent); font-family: var(--display); font-size: 15px; }
       .contact-form textarea { height: 150px; }
       .contact-form input:focus, .contact-form textarea:focus { border-bottom-color: var(--signal); }
